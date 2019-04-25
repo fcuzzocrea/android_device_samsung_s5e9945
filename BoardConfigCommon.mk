@@ -22,6 +22,9 @@ TARGET_ARCH_VARIANT := armv9-2a
 TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_VARIANT := cortex-a76
 
+# Compatibility Matrix
+DEVICE_MATRIX_FILE := $(COMMON_PATH)/compatibility_matrix.xml
+
 # DTS
 BOARD_DTB_CFG := $(COMMON_PATH)/configs/kernel/dtb.cfg
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
