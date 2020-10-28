@@ -93,5 +93,8 @@ ro.incremental.enable=true
 # Power
 vendor.powerhal.disp.idle_support=false
 
+# Zygote
+zygote.critical_window.minute=10
+
 # RIL
 ro.vendor.radio.default_network=26
