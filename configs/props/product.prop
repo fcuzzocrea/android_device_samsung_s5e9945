@@ -32,6 +32,7 @@ bluetooth.profile.sap.server.enabled=true
 bluetooth.profile.vcp.controller.enabled=true
 
 # LKMD
+ro.lmk.filecache_min_kb=153600
 ro.lmk.psi_partial_stall_ms=70
 ro.lmk.psi_complete_stall_ms=700
 ro.lmk.thrashing_limit=100
