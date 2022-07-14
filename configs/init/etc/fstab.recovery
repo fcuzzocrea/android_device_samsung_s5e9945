@@ -32,7 +32,7 @@ vendor_dlkm                      /vendor_dlkm      erofs  ro                    
 /dev/block/by-name/vendor_boot   /vendor_boot      emmc   defaults                                                                                                        first_stage_mount,formattable
 
 # ZRAM
-/dev/block/zram0                 none             swap   defaults                                                                                                        zramsize=60%,zram_loopback_path=/data/per_boot/zram_swap,zram_loopback_size=512M
+/dev/block/zram0                 none             swap   defaults                                                                                                        zramsize=60%,zram_backingdev_size=512M
 
 # VOLD
 /devices/platform/17900000.usb*  auto             auto   defaults                                                                                                        voldmanaged=usb:auto
