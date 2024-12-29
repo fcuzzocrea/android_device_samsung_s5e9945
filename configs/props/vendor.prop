@@ -35,6 +35,10 @@ bluetooth.profile.pbap.server.enabled=true
 bluetooth.profile.sap.server.enabled=true
 bluetooth.profile.vcp.controller.enabled=true
 
+# Chipset
+ro.soc.manufacturer=Samsung
+ro.soc.model=s5e9945
+
 # Codec2
 debug.stagefright.c2inputsurface=-1
 vendor.debug.c2.sbwc.enable=true
