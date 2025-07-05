@@ -303,6 +303,7 @@ PRODUCT_SOONG_NAMESPACES += \
     hardware/google/interfaces \
     hardware/google/pixel \
     hardware/qcom-caf/wlan \
+    hardware/qcom-caf/wlan/qcwcn \
     hardware/samsung \
     hardware/samsung_slsi-linaro/exynos/cpboot_v3 \
     $(COMMON_PATH)
