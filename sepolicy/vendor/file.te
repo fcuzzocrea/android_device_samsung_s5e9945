@@ -16,5 +16,6 @@ type hermes_socket, file_type, data_file_type;
 # Sysfs
 type sysfs_camera_writable, sysfs_type, rw_fs_type, fs_type;
 type sysfs_chip_id, sysfs_type, fs_type;
+type sysfs_ems_taskgroup, sysfs_type, fs_type;
 type sysfs_v4l, sysfs_type, r_fs_type, fs_type;
 type sysfs_vendor_display, sysfs_type, rw_fs_type, fs_type;

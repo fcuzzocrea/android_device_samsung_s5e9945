@@ -325,6 +325,7 @@ vendor/etc/vintf/manifest/sec-nfc-service.xml
 vendor/lib64/nfc_nci_sec.so
 vendor/lib64/vendor.samsung.hardware.nfc_aidl-V1-ndk.so
 
+vendor/etc/task_profiles.json
 # RIL
 vendor/bin/dmd
 vendor/bin/hw/rild

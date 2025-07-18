@@ -17,6 +17,9 @@
 # EFS
 /efs/cirrus(/.*)?                                                       u:object_r:sec_efs_file:s0
 
+# EMS
+/sys/devices/platform/ems/taskgroup/.*/(task|proc)			u:object_r:sysfs_ems_taskgroup:s0
+
 # Gralloc
 /vendor/lib64/hw/android\.hardware\.graphics\.mapper@4\.0-impl-sgr\.so  u:object_r:same_process_hal_file:s0
 /vendor/lib64/hw/vulkan\.samsung\.so                                    u:object_r:same_process_hal_file:s0
