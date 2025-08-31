@@ -73,6 +73,17 @@ TARGET_KERNEL_NO_GCC := true
 TARGET_KERNEL_SOURCE := kernel/samsung/s5e9945
 TARGET_KERNEL_CLANG_VERSION := r522817
 
+# Lineage health
+$(call soong_config_set,lineage_health,charging_control_charging_path,/sys/class/power_supply/battery/hmt_ta_charge)
+$(call soong_config_set,lineage_health,charging_control_charging_enabled,0)
+$(call soong_config_set,lineage_health,charging_control_charging_disabled,1)
+$(call soong_config_set,lineage_health,charging_control_charging_bypass,true)
+$(call soong_config_set,lineage_health,charging_control_charging_toggle,true)
+$(call soong_config_set,lineage_health,charging_control_charging_deadline,false)
+$(call soong_config_set,lineage_health,fast_charge_node,/sys/class/sec/switch/afc_disable)
+$(call soong_config_set,lineage_health,fast_charge_value_none,1)
+$(call soong_config_set,lineage_health,fast_charge_value_fast_charge,0)
+
 # Modules
 BOARD_RECOVERY_RAMDISK_KERNEL_MODULES_LOAD := $(shell cat $(COMMON_PATH)/configs/kernel/modules/ramdisk) $(BOARD_RECOVERY_RAMDISK_KERNEL_MODULES_LOAD)
 BOARD_SYSTEM_KERNEL_MODULES_LOAD := $(shell cat $(COMMON_PATH)/configs/kernel/modules/system)

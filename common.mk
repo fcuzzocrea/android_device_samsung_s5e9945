@@ -123,6 +123,10 @@ PRODUCT_PACKAGES += \
     null \
     toolbox.vendor_ramdisk
 
+# Lineage Health
+PRODUCT_PACKAGES += \
+    vendor.lineage.health-service.default
+
 # Linker
 PRODUCT_PACKAGES += public.libraries.txt
 
