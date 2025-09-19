@@ -30,9 +30,6 @@ genfscon sysfs /devices/platform/exynos-ufcc/ucc/cstate_control                 
 genfscon sysfs /kernel/mm/vmscan/am_app_launch                                                          u:object_r:sysfs_power_writable:s0
 genfscon sysfs /kernel/zram/app_launch                                                                  u:object_r:sysfs_power_writable:s0
 
-# Powercap
-genfscon sysfs /class/powercap		u:object_r:sysfs_powercap:s0
-
 # Sensors
 genfscon sysfs /devices/virtual/sensors/als_rear/als_enable                             u:object_r:sysfs_sensors_writable:s0
 genfscon sysfs /devices/virtual/sensors/flip_cover_detector_sensor/nfc_cover_status     u:object_r:sysfs_sensors_writable:s0
