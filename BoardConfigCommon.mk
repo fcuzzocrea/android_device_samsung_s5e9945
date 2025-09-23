@@ -132,6 +132,9 @@ BOARD_VENDOR_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/vendor
 BOARD_SEPOLICY_TEE_FLAVOR := teegris
 include device/samsung_slsi/sepolicy/sepolicy.mk
 
+# Security
+VENDOR_SECURITY_PATCH := 2025-01-01
+
 # USB
 $(call soong_config_set,samsungUsbGadgetVars,gadget_name,17900000.dwc3)
 

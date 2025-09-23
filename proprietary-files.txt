@@ -1,4 +1,5 @@
-# Proprietary files
+# All unpinned blobs are from BYH2
+# Vendor security patch level 2025-08-01
 
 # Audio - Main
 vendor/etc/LVACFS_Configuration.txt
