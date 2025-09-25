@@ -4,6 +4,11 @@ ro.boot.hypervisor.protected_vm.supported=true
 ro.boot.hypervisor.vm.supported=true
 
 # Audio
+aaudio.hw_burst_min_usec=2000
+aaudio.mmap_policy=2
+aaudio.mmap_exclusive_policy=2
+audio.offload.min.duration.secs=30
+ro.audio.flinger_standbytime_ms=2000
 ro.audio.spatializer_enabled=true
 
 # Bluetooth
