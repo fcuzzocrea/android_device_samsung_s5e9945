@@ -117,7 +117,8 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     fstab.s5e9945_vendor \
     fstab.s5e9945_vendor_ramdisk \
-    init.s5e9945.rc
+    init.s5e9945.rc \
+    init.udfps.rc
 
 # Input
 PRODUCT_PACKAGES += init.input.rc
