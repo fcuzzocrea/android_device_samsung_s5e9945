@@ -409,5 +409,7 @@ vendor/lib64/sensors.sensorhub.so
 vendor/bin/init.insmod.sh
 vendor/etc/init/wifi.rc
 vendor/etc/init/wifi_qcom_ap_exynos.rc
+vendor/etc/wifi/indoorchannel.info
+vendor/etc/wifi/p2p_supplicant_overlay.conf
 vendor/etc/wifi/p2p_supplicant_overlay.conf
 vendor/etc/wifi/wpa_supplicant_overlay.conf

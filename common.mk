@@ -41,10 +41,6 @@ $(call inherit-product, vendor/lineage/config/common_full_phone.mk)
 # API Levels
 PRODUCT_SHIPPING_API_LEVEL := 34
 
-# Branding
-PRODUCT_BRAND := samsung
-PRODUCT_MANUFACTURER := samsung
-
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 PRODUCT_ENFORCE_RRO_TARGETS := *
@@ -65,7 +61,7 @@ PRODUCT_SOONG_NAMESPACES += \
     hardware/samsung_slsi-linaro/exynos/cpboot_v3
 
 
-# AVF
+# pKVM
 $(call inherit-product, packages/modules/Virtualization/apex/product_packages.mk)
 
 # Audio
@@ -73,7 +69,8 @@ PRODUCT_COPY_FILES += \
     frameworks/av/services/audiopolicy/config/audio_policy_volumes.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_volumes.xml \
     frameworks/av/services/audiopolicy/config/bluetooth_with_le_audio_policy_configuration_7_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/bluetooth_with_le_audio_policy_configuration_7_0.xml \
     frameworks/av/services/audiopolicy/config/default_volume_tables.xml:$(TARGET_COPY_OUT_VENDOR)/etc/default_volume_tables.xml \
-    frameworks/av/services/audiopolicy/config/r_submix_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/r_submix_audio_policy_configuration.xml
+    frameworks/av/services/audiopolicy/config/r_submix_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/r_submix_audio_policy_configuration.xml \
+    frameworks/av/services/audiopolicy/config/usb_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/usb_audio_policy_configuration.xml
 
 PRODUCT_PACKAGES += \
     SamsungDAP \
@@ -119,9 +116,6 @@ PRODUCT_PACKAGES += \
     fstab.s5e9945_vendor_ramdisk \
     init.s5e9945.rc \
     init.udfps.rc
-
-# Input
-PRODUCT_PACKAGES += init.input.rc
 
 # Kernel Modules
 PRODUCT_PACKAGES += \
@@ -187,12 +181,20 @@ PRODUCT_PACKAGES += \
     android.hardware.power-service.pixel-libperfmgr \
     powerhint.json
 
+# PowerShare
+PRODUCT_PACKAGES += \
+    vendor.lineage.powershare-service.samsung
+
 # RIL
 PRODUCT_PACKAGES += \
     cbd \
     secril_config_svc \
     sehradiomanager \
     sehradiomanager.conf
+
+# SamsungDoze
+PRODUCT_PACKAGES += \
+    SamsungDoze
 
 # Secure Element
 PRODUCT_PACKAGES += android.hardware.secure_element-service.thales-st33
@@ -207,6 +209,10 @@ PRODUCT_PACKAGES += \
     android.hardware.thermal-service.pixel \
     thermal_info_config.json \
     thermal_symlinks
+
+# Touch HAL
+PRODUCT_PACKAGES += \
+    vendor.lineage.touch-service.samsung
 
 # USB
 PRODUCT_PACKAGES += \

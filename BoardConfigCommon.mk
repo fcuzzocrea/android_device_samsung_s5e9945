@@ -47,6 +47,9 @@ TARGET_COPY_OUT_VENDOR_DLKM := vendor_dlkm
 
 -include vendor/lineage/config/BoardConfigReservedSize.mk
 
+# Firmware
+TARGET_NO_BOOTLOADER := true
+
 # Kernel
 BOARD_BOOT_HEADER_VERSION := 4
 BOARD_BOOTCONFIG := androidboot.serialconsole=0
@@ -130,6 +133,9 @@ TARGET_USERIMAGES_USE_F2FS := true
 # Releasetools
 TARGET_RELEASETOOLS_EXTENSIONS := $(COMMON_PATH)
 
+# RIL
+ENABLE_VENDOR_RIL_SERVICE := true
+
 # SELinux
 include device/samsung_slsi/sepolicy/sepolicy.mk
 
@@ -139,7 +145,7 @@ BOARD_SEPOLICY_TEE_FLAVOR := teegris
 include device/samsung_slsi/sepolicy/sepolicy.mk
 
 # Security
-VENDOR_SECURITY_PATCH := 2025-01-01
+VENDOR_SECURITY_PATCH := 2025-08-01
 
 # USB
 $(call soong_config_set,samsungUsbGadgetVars,gadget_name,17900000.dwc3)
@@ -155,7 +161,8 @@ BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
 # VINTF
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := \
     $(COMMON_PATH)/configs/vintf/compatibility_matrix.device.xml \
-    hardware/samsung/vintf/samsung_framework_compatibility_matrix.xml
+    hardware/samsung/vintf/samsung_framework_compatibility_matrix.xml \
+    vendor/lineage/config/device_framework_matrix.xml
 DEVICE_MANIFEST_FILE := $(COMMON_PATH)/configs/vintf/manifest.xml
 
 # Wi-Fi
