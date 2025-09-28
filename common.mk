@@ -45,9 +45,6 @@ PRODUCT_SHIPPING_API_LEVEL := 34
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 PRODUCT_ENFORCE_RRO_TARGETS := *
 
-PRODUCT_PACKAGES += \
-    NcmTetheringOverlay \
-
 # Partitions
 $(call inherit-product, $(SRC_TARGET_DIR)/product/non_ab_device.mk)
 
