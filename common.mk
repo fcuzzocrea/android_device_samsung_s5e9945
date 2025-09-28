@@ -218,6 +218,10 @@ PRODUCT_PACKAGES += \
     thermal_info_config.json \
     thermal_symlinks
 
+# Thethering
+PRODUCT_PACKAGES += \
+    TetheringOverlay
+
 # Touch HAL
 PRODUCT_PACKAGES += \
     vendor.lineage.touch-service.samsung
