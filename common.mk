@@ -87,10 +87,6 @@ PRODUCT_PACKAGES += \
 
 TARGET_EXCLUDES_AUDIOFX := true
 
-# Charger
-PRODUCT_PACKAGES += \
-    charger_res_images_vendor
-
 # DRM
 PRODUCT_PACKAGES += com.android.hardware.drm.clearkey
 
@@ -111,8 +107,8 @@ PRODUCT_PACKAGES += vndservicemanager
 
 # Health
 PRODUCT_PACKAGES += \
-    android.hardware.health-service.samsung \
-    android.hardware.health-service.samsung-recovery
+    android.hardware.health-service.example \
+    android.hardware.health-service.example_recovery
 
 # Init
 PRODUCT_PACKAGES += \
