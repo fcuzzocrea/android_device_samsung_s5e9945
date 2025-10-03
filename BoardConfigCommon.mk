@@ -59,10 +59,6 @@ BOARD_BOOTCONFIG := androidboot.serialconsole=0
 BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_MKBOOTIMG_ARGS := --header_version $(BOARD_BOOT_HEADER_VERSION)
 BOARD_MKBOOTIMG_INIT_ARGS := $(BOARD_MKBOOTIMG_ARGS)
-TARGET_KERNEL_ADDITIONAL_FLAGS := \
-    DTC_FLAGS=-@ \
-    KCFLAGS=-D__ANDROID_COMMON_KERNEL__ \
-    TARGET_SOC=s5e9945
 TARGET_KERNEL_CONFIG := \
     $(shell KCONFIG_CONFIG=kernel/samsung/s5e9945/arch/arm64/configs/erd9945_u_gki_defconfig \
     kernel/samsung/s5e9945/scripts/kconfig/merge_config.sh -m -r \
@@ -72,9 +68,7 @@ TARGET_KERNEL_CONFIG := \
     kernel/samsung/s5e9945/arch/arm64/configs/s5e9945_user.cfg \
     kernel/samsung/s5e9945/arch/arm64/configs/s5e9945-user_defconfig \
     1>/dev/null; echo erd9945_u_gki_defconfig)
-TARGET_KERNEL_NO_GCC := true
 TARGET_KERNEL_SOURCE := kernel/samsung/s5e9945
-TARGET_KERNEL_CLANG_VERSION := r522817
 
 # Lineage health
 $(call soong_config_set,lineage_health,charging_control_charging_path,/sys/class/power_supply/battery/hmt_ta_charge)
@@ -117,7 +111,7 @@ BOARD_SAMSUNG_DYNAMIC_PARTITIONS_PARTITION_LIST := \
     system_ext \
     vendor \
     vendor_dlkm
-BOARD_SAMSUNG_DYNAMIC_PARTITIONS_SIZE := $(shell echo $$(( $(BOARD_SUPER_PARTITION_SIZE) - 4 * 1024**2 )))
+BOARD_SAMSUNG_DYNAMIC_PARTITIONS_SIZE := 12977176576
 
 # Platform
 BOARD_VENDOR := samsung
