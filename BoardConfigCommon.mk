@@ -59,22 +59,15 @@ BOARD_BOOTCONFIG := androidboot.serialconsole=0
 BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_MKBOOTIMG_ARGS := --header_version $(BOARD_BOOT_HEADER_VERSION)
 BOARD_MKBOOTIMG_INIT_ARGS := $(BOARD_MKBOOTIMG_ARGS)
-TARGET_KERNEL_CONFIG := \
-    $(shell KCONFIG_CONFIG=kernel/samsung/s5e9945/arch/arm64/configs/erd9945_u_gki_defconfig \
-    kernel/samsung/s5e9945/scripts/kconfig/merge_config.sh -m -r \
-    kernel/samsung/s5e9945/arch/arm64/configs/gki_defconfig \
-    kernel/samsung/s5e9945/arch/arm64/configs/s5e9945-base_defconfig \
-    kernel/samsung/s5e9945/arch/arm64/configs/s5e9945-bazel_defconfig \
-    kernel/samsung/s5e9945/arch/arm64/configs/s5e9945_user.cfg \
-    kernel/samsung/s5e9945/arch/arm64/configs/s5e9945-user_defconfig \
-    1>/dev/null; echo erd9945_u_gki_defconfig)
+TARGET_KERNEL_CONFIG := gki_defconfig \
+                        erd9945_gki.config
 TARGET_KERNEL_SOURCE := kernel/samsung/s5e9945
 
 # Lineage health
 $(call soong_config_set,lineage_health,charging_control_charging_path,/sys/class/power_supply/battery/hmt_ta_charge)
-$(call soong_config_set,lineage_health,charging_control_charging_enabled,0)
-$(call soong_config_set,lineage_health,charging_control_charging_disabled,1)
-$(call soong_config_set,lineage_health,charging_control_charging_bypass,true)
+$(call soong_config_set,lineage_health,charging_control_charging_enabled,1)
+$(call soong_config_set,lineage_health,charging_control_charging_disabled,0)
+$(call soong_config_set,lineage_health,charging_control_charging_bypass,false)
 $(call soong_config_set,lineage_health,charging_control_charging_toggle,true)
 $(call soong_config_set,lineage_health,charging_control_charging_deadline,false)
 $(call soong_config_set,lineage_health,fast_charge_node,/sys/class/sec/switch/afc_disable)
