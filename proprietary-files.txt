@@ -280,6 +280,7 @@ vendor/apex/com.samsung.android.gnss.lsi.root.signed/etc/firmware/firmware_signe
 vendor/apex/com.samsung.android.gnss.lsi.root.signed/etc/firmware/firmware_signed_r12sksx.bin:vendor/firmware/gnss/firmware_signed_r12sksx.bin
 vendor/apex/com.samsung.android.gnss.lsi.root.signed/etc/firmware/firmware_signed_e2sxxx.bin:vendor/firmware/gnss/firmware_signed_e2sxxx.bin
 vendor/apex/com.samsung.android.gnss.lsi.root.signed/etc/firmware/firmware_signed_e1sxxx.bin:vendor/firmware/gnss/firmware_signed_e1sxxx.bin
+vendor/apex/com.samsung.android.gnss.lsi.root.signed/etc/firmware/firmware_signed_e1sxxx.bin:vendor/firmware/gnss/firmware_signed_e1s.bin
 vendor/apex/com.samsung.android.gnss.lsi.root.signed/etc/firmware/firmware_signed_b7rxxx.bin:vendor/firmware/gnss/firmware_signed_b7rxxx.bin
 vendor/apex/com.samsung.android.gnss.lsi.root.signed/etc/firmware/firmware_signed_e2sksx.bin:vendor/firmware/gnss/firmware_signed_e2sksx.bin
 vendor/apex/com.samsung.android.gnss.lsi.root.signed/etc/firmware/firmware_signed_e1sksx.bin:vendor/firmware/gnss/firmware_signed_e1sksx.bin
