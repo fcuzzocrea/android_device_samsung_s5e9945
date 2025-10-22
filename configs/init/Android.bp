@@ -1,23 +1,21 @@
 genrule {
     name: "gen_fstab_s5e9945_recovery",
-    srcs: ["fstab.s5e9945.in"],
-    cmd: `grep -Ev 'efs|product|system_|vbmeta|vendor' $(in) |
-          sed  -E 's/,?\w*mount,?|,fileencryption.*|recoveryonly,//g' |
-          sed 's/,inlinecrypt/            /' |
-          sed 's/recoveryonly/defaults/g' > $(out)`,
+    srcs: ["etc/fstab.s5e9945.in"],
+    cmd: "grep -Ev 'efs|product|system_|vbmeta|vendor' $(in) |\n          sed  -E 's/,?\\w*mount,?|,fileencryption.*|recoveryonly,//g' |\n          sed 's/,inlinecrypt/            /' |\n          sed 's/recoveryonly/defaults/g' > $(out)",
+
     out: ["recovery.fstab"],
 }
 
 genrule {
     name: "gen_fstab_s5e9945_vendor",
-    srcs: ["fstab.s5e9945.in"],
+    srcs: ["etc/fstab.s5e9945.in"],
     cmd: "grep -Ev 'first_stage_mount|recoveryonly' $(in) > $(out)",
     out: ["fstab.s5e9945"],
 }
 
 genrule {
     name: "gen_fstab_s5e9945_vendor_ramdisk",
-    srcs: ["fstab.s5e9945.in"],
+    srcs: ["etc/fstab.s5e9945.in"],
     cmd: "grep -E '#|first_stage_mount' $(in) > $(out)",
     out: ["fstab.s5e9945"],
 }
@@ -37,22 +35,127 @@ prebuilt_etc {
 }
 
 prebuilt_etc {
+    name: "ueventd.s5e9945.rc",
+    filename: "ueventd.rc",
+    src: "etc/ueventd.s5e9945.rc",
+    vendor: true,
+}
+
+prebuilt_etc {
+    name: "hermesd.rc",
+    src: "etc/init/hermesd.rc",
+    vendor: true,
+    relative_install_path: "init",
+}
+
+prebuilt_etc {
+    name: "init.baseband.rc",
+    src: "etc/init/init.baseband.rc",
+    vendor: true,
+    relative_install_path: "init",
+}
+
+prebuilt_etc {
+    name: "init.fingerprint.rc",
+    src: "etc/init/init.fingerprint.rc",
+    vendor: true,
+    relative_install_path: "init",
+}
+
+prebuilt_etc {
+    name: "init.gps.rc",
+    src: "etc/init/init.gps.rc",
+    vendor: true,
+    relative_install_path: "init",
+}
+
+prebuilt_etc {
+    name: "init.gps.sh.rc",
+    src: "etc/init/init.gps.sh.rc",
+    vendor: true,
+    relative_install_path: "init",
+}
+
+prebuilt_etc {
+    name: "init.nfc.samsung.rc",
+    src: "etc/init/init.nfc.samsung.rc",
+    vendor: true,
+    relative_install_path: "init",
+}
+
+prebuilt_etc {
     name: "init.s5e9945.rc",
-    src: "init.s5e9945.rc",
+    src: "etc/init/init.s5e9945.rc",
     vendor: true,
     relative_install_path: "init",
 }
 
 prebuilt_etc {
     name: "init.s5e9945.usb.rc",
-    src: "init.s5e9945.usb.rc",
+    src: "etc/init/init.s5e9945.usb.rc",
+    vendor: true,
+    relative_install_path: "init",
+}
+
+prebuilt_etc {
+    name: "init.sensorhub.rc",
+    src: "etc/init/init.sensorhub.rc",
     vendor: true,
     relative_install_path: "init",
 }
 
 prebuilt_etc {
     name: "init.udfps.rc",
-    src: "init.udfps.rc",
+    src: "etc/init/init.udfps.rc",
+    vendor: true,
+    relative_install_path: "init",
+}
+
+prebuilt_etc {
+    name: "init.vendor.onebinary.rc",
+    src: "etc/init/init.vendor.onebinary.rc",
+    vendor: true,
+    relative_install_path: "init",
+}
+
+prebuilt_etc {
+    name: "init.vendor.rilcommon.rc",
+    src: "etc/init/init.vendor.rilcommon.rc",
+    vendor: true,
+    relative_install_path: "init",
+}
+
+prebuilt_etc {
+    name: "teegris.rc",
+    src: "etc/init/teegris.rc",
+    vendor: true,
+    relative_install_path: "init",
+}
+
+prebuilt_etc {
+    name: "teegris_tui.rc",
+    src: "etc/init/teegris_tui.rc",
+    vendor: true,
+    relative_install_path: "init",
+}
+
+prebuilt_etc {
+    name: "vendor.samsung.rild.rc",
+    src: "etc/init/vendor.samsung.rild.rc",
+    vendor: true,
+    relative_install_path: "init",
+}
+
+prebuilt_etc {
+    name: "wifi_qcom_ap_exynos.rc",
+    src: "etc/init/wifi_qcom_ap_exynos.rc",
+    vendor: true,
+    relative_install_path: "init",
+}
+
+prebuilt_etc {
+    name: "wifi_sec.rc",
+    src: "etc/init/wifi_sec.rc",
     vendor: true,
     relative_install_path: "init",
 }

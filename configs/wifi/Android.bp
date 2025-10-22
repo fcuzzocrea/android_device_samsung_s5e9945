@@ -1,0 +1,27 @@
+prebuilt_etc {
+    name: "indoorchannel.info",
+    src: "indoorchannel.info",
+    sub_dir: "wifi",
+    vendor: true,
+}
+
+prebuilt_etc {
+    name: "p2p_supplicant_overlay.conf",
+    src: "p2p_supplicant_overlay.conf",
+    sub_dir: "wifi",
+    vendor: true,
+}
+
+prebuilt_etc {
+    name: "wpa_supplicant_overlay.conf",
+    src: "wpa_supplicant_overlay.conf",
+    sub_dir: "wifi",
+    vendor: true,
+}
+
+sh_binary {
+    name: "init.insmod.sh",
+    src: "init.insmod.sh",
+    filename: "init.insmod.sh",
+    vendor: true,
+}

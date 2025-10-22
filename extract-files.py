@@ -1,6 +1,6 @@
 #!/usr/bin/env -S PYTHONPATH=../../../tools/extract-utils python3
 #
-# SPDX-FileCopyrightText: 2024 The LineageOS Project
+# SPDX-FileCopyrightText: 2025 The LineageOS Project
 # SPDX-License-Identifier: Apache-2.0
 #
 
@@ -33,9 +33,6 @@ namespace_imports = [
 
 
 blob_fixups: blob_fixups_user_type = {
-    'product/etc/sysconfig/sysconfig_gemini.xml': blob_fixup()
-        .regex_replace('.*O.*\n', '')
-        .regex_replace('<f', '    <f'),
     'vendor/bin/hermesd': blob_fixup()
         .binary_regex_replace(b'security.securehw.available', b'vendor.securehw.available\x00\x00')
         .binary_regex_replace(b'security.securenvm.available', b'vendor.securenvm.available\x00\x00'),
@@ -54,20 +51,13 @@ blob_fixups: blob_fixups_user_type = {
     'vendor/etc/init/android.hardware.security.keymint-service.samsung.rc': blob_fixup()
         .regex_replace('-service', '-service.samsung'),
     (
-        'vendor/etc/init/init.gps.sh.rc',
         'vendor/etc/init/vendor.samsung.hardware.gnss-service.rc'
     ): blob_fixup()
         .regex_replace('apex/com.samsung.android.gnss.lsi.root', 'vendor')
         .regex_replace('bin', 'bin/hw'),
-    'vendor/etc/init/init.nfc.samsung.rc': blob_fixup()
-        .regex_replace('system', 'secure_element'),
-    'vendor/etc/init/init.s5e9945.rc': blob_fixup()
-        .regex_replace('vendor_spay', 'system'),
     'vendor/etc/init/vendor.samsung.hardware.camera.provider-service_64.rc': blob_fixup()
         .regex_replace('vendor_secdir w', 'w')
         .regex_replace('vendor_secdir', 'camera'),
-    'vendor/etc/media_codecs_performance_c2.xml': blob_fixup()
-        .regex_replace('.*sec\\.(.|\n)*D', '    </D'),
     'vendor/etc/vintf/manifest/sec_c2_manifest_default0_1_2.xml': blob_fixup()
         .regex_replace('.*t0.*\n', ''),
     'vendor/lib64/android.hardware.graphics.composer@2.2-resources_samsung.so': blob_fixup()
@@ -102,6 +92,12 @@ blob_fixups: blob_fixups_user_type = {
         .replace_needed('libtinyalsa.so', 'libtinyalsa_samsung.so'),
     'vendor/lib64/libexynosgraphicbuffer.so': blob_fixup()
         .add_needed('libshim_ui.so'),
+    (
+        'vendor/lib64/libgraphgen.so',
+    ): blob_fixup()
+        .clear_symbol_version('AHardwareBuffer_describe')
+        .clear_symbol_version('AHardwareBuffer_lock')
+        .clear_symbol_version('AHardwareBuffer_unlock'),
     'vendor/lib64/libsamsungcamerahal.so': blob_fixup()
         .sig_replace('e0 3a', 'a0 3b'),
     'vendor/lib64/libsec-ril.so': blob_fixup()

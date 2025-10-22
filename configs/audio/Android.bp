@@ -1,4 +1,10 @@
 prebuilt_etc {
+    name: "audio_board_info.xml",
+    src: "audio_board_info.xml",
+    vendor: true,
+}
+
+prebuilt_etc {
     name: "audio_effects.xml",
     src: "audio_effects.xml",
     vendor: true,
@@ -7,5 +13,23 @@ prebuilt_etc {
 prebuilt_etc {
     name: "audio_policy_configuration.xml",
     src: "audio_policy_configuration.xml",
+    vendor: true,
+}
+
+prebuilt_etc {
+    name: "mixer_usb_default.xml",
+    src: "mixer_usb_default.xml",
+    vendor: true,
+}
+
+prebuilt_etc {
+    name: "mixer_usb_gray.xml",
+    src: "mixer_usb_gray.xml",
+    vendor: true,
+}
+
+prebuilt_etc {
+    name: "mixer_usb_white.xml",
+    src: "mixer_usb_white.xml",
     vendor: true,
 }

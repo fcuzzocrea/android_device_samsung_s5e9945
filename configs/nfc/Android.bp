@@ -1,0 +1,11 @@
+prebuilt_etc {
+    name: "libnfc-sec-vendor.conf",
+    src: "libnfc-sec-vendor.conf",
+    vendor: true,
+}
+
+prebuilt_etc {
+    name: "libse-gto-hal.conf",
+    src: "libse-gto-hal.conf",
+    vendor: true,
+}

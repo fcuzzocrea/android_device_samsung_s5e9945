@@ -1,10 +1,13 @@
 <?xml version='1.0' encoding='utf-8' standalone='yes'?>
-<!-- This is a place for vendor-specific config values. The format and
+<!--
+     SPDX-FileCopyrightText: 2022-2025 The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+
+     This is a place for vendor-specific config values. The format and
      filtering rules are the same as those in carrier_config*.xml files. This
      file is read after any specific config file from the assets folder, so it
      must use explicit filters for MCC ad MNC if that is desired.
 -->
-
 <carrier_config_list>
     <carrier_config>
         <!-- Config to show LTE+ icon if available -->

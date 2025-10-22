@@ -1,0 +1,6 @@
+prebuilt_etc {
+    name: "gps.cfg",
+    src: "gps.cfg",
+    sub_dir: "gnss",
+    vendor: true,
+}

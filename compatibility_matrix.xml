@@ -1,4 +1,4 @@
-<compatibility-matrix version="4.0" type="device">
+<compatibility-matrix version="9.0" type="device">
     <hal format="hidl" optional="true">
         <name>android.frameworks.displayservice</name>
         <version>1.0</version>
@@ -23,29 +23,14 @@
             <instance>default</instance>
         </interface>
     </hal>
-    <hal format="hidl" optional="true">
-        <name>android.hardware.graphics.composer</name>
-        <version>2.1</version>
+    <hal format="aidl" optional="true">
+        <name>android.hardware.gnss</name>
+        <version>2</version>
         <interface>
-            <name>IComposer</name>
-            <instance>vr</instance>
-        </interface>
-    </hal>
-    <hal format="hidl" optional="true">
-        <name>android.hidl.allocator</name>
-        <version>1.0</version>
-        <interface>
-            <name>IAllocator</name>
-            <instance>ashmem</instance>
-        </interface>
-    </hal>
-    <hal format="hidl" optional="true">
-        <name>android.hidl.manager</name>
-        <version>1.0</version>
-        <interface>
-            <name>IServiceManager</name>
+            <name>IGnss</name>
             <instance>default</instance>
         </interface>
+        <fqname>IGnss/default</fqname>
     </hal>
     <hal format="hidl" optional="true">
         <name>android.hidl.memory</name>
@@ -56,10 +41,10 @@
         </interface>
     </hal>
     <hal format="hidl" optional="true">
-        <name>android.hidl.token</name>
-        <version>1.0</version>
+        <name>android.system.net.netd</name>
+        <version>1.1</version>
         <interface>
-            <name>ITokenManager</name>
+            <name>INetd</name>
             <instance>default</instance>
         </interface>
     </hal>

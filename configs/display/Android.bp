@@ -1,0 +1,69 @@
+prebuilt_etc {
+    name: "calib_data_atc.xml",
+    src: "dqe/calib_data_atc.xml",
+    sub_dir: "dqe",
+    vendor: true,
+}
+
+prebuilt_etc {
+    name: "calib_data_bypass.xml",
+    src: "dqe/calib_data_bypass.xml",
+    sub_dir: "dqe",
+    vendor: true,
+}
+
+prebuilt_etc {
+    name: "calib_data_colormode0.xml",
+    src: "dqe/calib_data_colormode0.xml",
+    sub_dir: "dqe",
+    vendor: true,
+}
+
+prebuilt_etc {
+    name: "calib_data_colortemp.xml",
+    src: "dqe/calib_data_colortemp.xml",
+    sub_dir: "dqe",
+    vendor: true,
+}
+
+prebuilt_etc {
+    name: "calib_data_eyetemp.xml",
+    src: "dqe/calib_data_eyetemp.xml",
+    sub_dir: "dqe",
+    vendor: true,
+}
+
+prebuilt_etc {
+    name: "calib_data_rgbgain.xml",
+    src: "dqe/calib_data_rgbgain.xml",
+    sub_dir: "dqe",
+    vendor: true,
+}
+
+prebuilt_etc {
+    name: "calib_data_sharpness.xml",
+    src: "dqe/calib_data_sharpness.xml",
+    sub_dir: "dqe",
+    vendor: true,
+}
+
+prebuilt_etc {
+    name: "calib_data_skincolor.xml",
+    src: "dqe/calib_data_skincolor.xml",
+    sub_dir: "dqe",
+    vendor: true,
+}
+
+prebuilt_etc {
+    name: "calib_data_whitepoint.xml",
+    src: "dqe/calib_data_whitepoint.xml",
+    sub_dir: "dqe",
+    vendor: true,
+}
+
+prebuilt_etc {
+    name: "DQE_coef_data.xml",
+    src: "dqe/DQE_coef_data.xml",
+    sub_dir: "dqe",
+    vendor: true,
+}

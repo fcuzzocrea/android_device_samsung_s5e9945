@@ -1,0 +1,20 @@
+on post-fs-data
+# Directory for GPS
+    chmod 0660 /dev/gnss_ipc
+    chown system system /dev/gnss_ipc
+    mkdir /data/vendor 0771 system system
+    chown system system /data/vendor
+    mkdir /data/vendor/gps 0771 system system
+    chown system system /data/vendor/gps
+    mkdir /data/vendor/gps/sgee 0771 system system
+    chown system system /data/vendor/gps/sgee
+    rm /data/vendor/gps/gps_started
+    rm /data/vendor/gps/glonass_started
+    rm /data/vendor/gps/beidou_started
+    rm /data/vendor/gps/smd_started
+    rm /data/vendor/gps/lna_started
+    rm /data/vendor/gps/lna_l5_started
+    rm /data/vendor/gps/sv_cno.info
+    rm /data/vendor/gps/sv_cno_glonass.info
+    rm /data/vendor/gps/sv_cno_beidou.info
+    rm /data/vendor/gps/sv_cno_gps_l5.info

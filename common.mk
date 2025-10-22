@@ -1,79 +1,19 @@
 #
-# Copyright 2014 The Android Open-Source Project
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# SPDX-FileCopyrightText: 2025 The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
 #
 
-# All components inherited here go to system image
-$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit_only.mk)
-$(call inherit-product, $(SRC_TARGET_DIR)/product/generic_system.mk)
+COMMON_PATH := device/samsung/s5e9945
 
-# All components inherited here go to system_ext image
-$(call inherit-product, $(SRC_TARGET_DIR)/product/handheld_system_ext.mk)
-$(call inherit-product, $(SRC_TARGET_DIR)/product/telephony_system_ext.mk)
-
-# All components inherited here go to product image
-$(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_product.mk)
-$(call inherit-product, $(SRC_TARGET_DIR)/product/window_extensions.mk)
-
-# All components inherited here go to vendor image
-$(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
-$(call inherit-product, $(SRC_TARGET_DIR)/product/media_vendor.mk)
-$(call inherit-product, frameworks/native/build/phone-xhdpi-6144-dalvik-heap.mk)
-
-# Inherit proprietary files
-$(call inherit-product, vendor/samsung/s5e9945/s5e9945-vendor.mk)
-
-# Inherit some common Lineage stuff
-$(call inherit-product, vendor/lineage/config/common_full_phone.mk)
-
-
-# API Levels
-PRODUCT_SHIPPING_API_LEVEL := 34
-
-# Overlays
-DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
-PRODUCT_ENFORCE_RRO_TARGETS := *
-
-# Partitions
-$(call inherit-product, $(SRC_TARGET_DIR)/product/non_ab_device.mk)
-
+# A/B
 AB_OTA_UPDATER := false
-PRODUCT_USE_DYNAMIC_PARTITIONS := true
 
-# Soong Namespaces
-PRODUCT_SOONG_NAMESPACES += \
-    bootable/deprecated-ota \
-    hardware/google/interfaces \
-    hardware/google/pixel \
-    hardware/qcom-caf/wlan \
-    hardware/samsung \
-    hardware/samsung_slsi-linaro/exynos/cpboot_v3
-
-
-# pKVM
-$(call inherit-product, packages/modules/Virtualization/apex/product_packages.mk)
+# Additional native libraries
+PRODUCT_PACKAGES += \
+    public.libraries.txt
 
 # Audio
-PRODUCT_COPY_FILES += \
-    frameworks/av/services/audiopolicy/config/audio_policy_volumes.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_volumes.xml \
-    frameworks/av/services/audiopolicy/config/bluetooth_with_le_audio_policy_configuration_7_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/bluetooth_with_le_audio_policy_configuration_7_0.xml \
-    frameworks/av/services/audiopolicy/config/default_volume_tables.xml:$(TARGET_COPY_OUT_VENDOR)/etc/default_volume_tables.xml \
-    frameworks/av/services/audiopolicy/config/r_submix_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/r_submix_audio_policy_configuration.xml \
-    frameworks/av/services/audiopolicy/config/usb_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/usb_audio_policy_configuration.xml
-
 PRODUCT_PACKAGES += \
-    SamsungDAP \
     android.hardware.audio.effect@7.0-impl \
     android.hardware.audio.service \
     android.hardware.audio@7.1-impl \
@@ -82,40 +22,94 @@ PRODUCT_PACKAGES += \
     audio.bluetooth.default \
     audio.r_submix.default \
     audio.usbv2.default \
+    audio_board_info.xml \
     audio_effects.xml \
-    audio_policy_configuration.xml
+    audio_policy_configuration.xml \
+    mixer_usb_default.xml \
+    mixer_usb_gray.xml \
+    mixer_usb_white.xml \
+    privapp-permissions-hotword.xml \
+    SamsungDAP
+
+PRODUCT_COPY_FILES += \
+    frameworks/av/services/audiopolicy/config/audio_policy_volumes.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_volumes.xml \
+    frameworks/av/services/audiopolicy/config/bluetooth_with_le_audio_policy_configuration_7_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/bluetooth_with_le_audio_policy_configuration_7_0.xml \
+    frameworks/av/services/audiopolicy/config/default_volume_tables.xml:$(TARGET_COPY_OUT_VENDOR)/etc/default_volume_tables.xml \
+    frameworks/av/services/audiopolicy/config/r_submix_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/r_submix_audio_policy_configuration.xml \
+    frameworks/av/services/audiopolicy/config/usb_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/usb_audio_policy_configuration.xml
 
 TARGET_EXCLUDES_AUDIOFX := true
 
-# DRM
-PRODUCT_PACKAGES += com.android.hardware.drm.clearkey
+# Cgroup and task_profiles
+PRODUCT_PACKAGES += \
+    cgroups.json \
+    task_profiles.s5e9945.json
 
-# Display
+# Charger
+PRODUCT_PACKAGES += \
+    charger_res_images_vendor
+
+# DRM
+PRODUCT_PACKAGES += \
+    com.android.hardware.drm.clearkey
+
+# Dynamic Partitions
+PRODUCT_USE_DYNAMIC_PARTITIONS := true
+
+# Fastbootd
+PRODUCT_PACKAGES += \
+    fastbootd
+
+# Fingerprint
+PRODUCT_PACKAGES += \
+    android.hardware.biometrics.fingerprint-service.samsung \
+    init.fingerprint.rc \
+    init.udfps.rc
+
+# Graphics
+PRODUCT_PACKAGES += \
+    calib_data_atc.xml \
+    calib_data_bypass.xml \
+    calib_data_colormode0.xml \
+    calib_data_colortemp.xml \
+    calib_data_eyetemp.xml \
+    calib_data_rgbgain.xml \
+    calib_data_sharpness.xml \
+    calib_data_skincolor.xml \
+    calib_data_whitepoint.xml \
+    DQE_coef_data.xml
+
 PRODUCT_COPY_FILES += \
     vendor/samsung/s5e9945/proprietary/recovery/root/lib/firmware/sgpu/vangogh_lite_unified_evt1.bin:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/lib/firmware/sgpu/vangogh_lite_unified_evt1.bin
 
-PRODUCT_PACKAGES += hdr_samsung_mx.key
+PRODUCT_PACKAGES += \
+    hdr_samsung_mx.key
 
-# Fastbootd
-PRODUCT_PACKAGES += fastbootd
-
-# Fingerprint
-PRODUCT_PACKAGES += android.hardware.biometrics.fingerprint-service.samsung
-
-# General
-PRODUCT_PACKAGES += vndservicemanager
+# GNSS
+PRODUCT_PACKAGES += \
+    init.gps.rc \
+    init.gps.sh.rc \
+    gps.cfg
 
 # Health
 PRODUCT_PACKAGES += \
-    android.hardware.health-service.example \
-    android.hardware.health-service.example_recovery
+    android.hardware.health-service.samsung \
+    android.hardware.health-service.samsung-recovery
+
+# Hermes
+PRODUCT_PACKAGES += \
+    hermesd.rc
 
 # Init
 PRODUCT_PACKAGES += \
     fstab.s5e9945_vendor \
     fstab.s5e9945_vendor_ramdisk \
     init.s5e9945.rc \
-    init.udfps.rc
+    ueventd.s5e9945.rc
+
+# Kernel
+PRODUCT_SET_DEBUGFS_RESTRICTIONS := true
+PRODUCT_ENABLE_UFFD_GC := true
 
 # Kernel Modules
 PRODUCT_PACKAGES += \
@@ -127,25 +121,48 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     vendor.lineage.health-service.default
 
-# Linker
-PRODUCT_PACKAGES += public.libraries.txt
+# Media
+PRODUCT_PACKAGES += \
+    media_codecs_c2.xml \
+    media_codecs_performance_c2.xml \
+    media_profiles_V1_0.xml
+
+# NFC
+PRODUCT_PACKAGES += \
+    init.nfc.samsung.rc \
+    libnfc-sec-vendor.conf \
+    libse-gto-hal.conf
+
+# Overlays
+DEVICE_PACKAGE_OVERLAYS += $(COMMON_PATH)/overlay
+PRODUCT_ENFORCE_RRO_TARGETS := *
 
 # Permissions
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.audio.pro.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.audio.pro.prebuilt.xml \
+    frameworks/native/data/etc/android.hardware.camera.ar.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.camera.ar.xml \
+    frameworks/native/data/etc/android.hardware.camera.autofocus.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.camera.autofocus.xml \
+    frameworks/native/data/etc/android.hardware.camera.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.camera.xml \
     frameworks/native/data/etc/android.hardware.keystore.app_attest_key.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.keystore.app_attest_key.prebuilt.xml \
     frameworks/native/data/etc/android.hardware.nfc.uicc.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.nfc.uicc.prebuilt.xml \
     frameworks/native/data/etc/android.hardware.opengles.aep.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.opengles.aep.prebuilt.xml \
+    frameworks/native/data/etc/android.hardware.strongbox_keystore.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.strongbox_keystore.xml \
     frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.prebuilt.xml \
-    frameworks/native/data/etc/android.software.midi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.midi.prebuilt.xml \
     frameworks/native/data/etc/android.hardware.wifi.aware.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.aware.xml \
-    frameworks/native/data/etc/android.hardware.wifi.rtt.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.rtt.xml
+    frameworks/native/data/etc/android.hardware.wifi.rtt.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.rtt.xml \
+    frameworks/native/data/etc/android.software.app_widgets.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.app_widgets.xml \
+    frameworks/native/data/etc/android.software.freeform_window_management.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.freeform_window_management.xml \
+    frameworks/native/data/etc/android.software.midi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.midi.prebuilt.xml \
+    frameworks/native/data/etc/android.software.picture_in_picture.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.picture_in_picture.xml \
+    frameworks/native/data/etc/com.android.nfc_extras.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/com.android.nfc_extras.xml
 
 PRODUCT_PACKAGES += \
     android.hardware.audio.low_latency.prebuilt.xml \
+    android.hardware.bluetooth.prebuilt.xml \
     android.hardware.bluetooth_le.prebuilt.xml \
     android.hardware.camera.concurrent.prebuilt.xml \
     android.hardware.camera.flash-autofocus.prebuilt.xml \
+    android.hardware.camera.front.prebuilt.xml \
     android.hardware.camera.full.prebuilt.xml \
     android.hardware.camera.raw.prebuilt.xml \
     android.hardware.fingerprint.prebuilt.xml \
@@ -157,7 +174,9 @@ PRODUCT_PACKAGES += \
     android.hardware.nfc.prebuilt.xml \
     android.hardware.se.omapi.ese.prebuilt.xml \
     android.hardware.se.omapi.uicc.prebuilt.xml \
+    android.hardware.sensor.accelerometer.prebuilt.xml \
     android.hardware.sensor.barometer.prebuilt.xml \
+    android.hardware.sensor.compass.prebuilt.xml \
     android.hardware.sensor.gyroscope.prebuilt.xml \
     android.hardware.sensor.hifi_sensors.prebuilt.xml \
     android.hardware.sensor.light.prebuilt.xml \
@@ -165,6 +184,7 @@ PRODUCT_PACKAGES += \
     android.hardware.sensor.stepcounter.prebuilt.xml \
     android.hardware.sensor.stepdetector.prebuilt.xml \
     android.hardware.telephony.gsm.prebuilt.xml \
+    android.hardware.telephony.ims.prebuilt.xml \
     android.hardware.telephony.satellite.prebuilt.xml \
     android.hardware.usb.accessory.prebuilt.xml \
     android.hardware.usb.host.prebuilt.xml \
@@ -176,9 +196,14 @@ PRODUCT_PACKAGES += \
     android.hardware.wifi.prebuilt.xml \
     android.software.ipsec_tunnels.prebuilt.xml \
     android.software.opengles.deqp.level-latest.prebuilt.xml \
+    android.software.sip.voip.prebuilt.xml \
+    android.software.verified_boot.prebuilt.xml \
     android.software.vulkan.deqp.level-2023-03-01.prebuilt.xml \
     com.nxp.mifare.prebuilt.xml \
     handheld_core_hardware.prebuilt.xml
+
+# pKVM
+$(call inherit-product, packages/modules/Virtualization/apex/product_packages.mk)
 
 # Power
 PRODUCT_PACKAGES += \
@@ -189,9 +214,17 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     vendor.lineage.powershare-service.samsung
 
+# Recovery
+PRODUCT_COPY_FILES += \
+    $(COMMON_PATH)/configs/init/etc/init/init.recovery.s5e9945.rc:recovery/root/init.recovery.s5e9945.rc
+
 # RIL
 PRODUCT_PACKAGES += \
     cbd \
+    init.baseband.rc \
+    init.vendor.onebinary.rc \
+    init.vendor.rilcommon.rc \
+    vendor.samsung.rild.rc \
     secril_config_svc \
     sehradiomanager \
     sehradiomanager.conf
@@ -201,12 +234,34 @@ PRODUCT_PACKAGES += \
     SamsungDoze
 
 # Secure Element
-PRODUCT_PACKAGES += android.hardware.secure_element-service.thales-st33
+PRODUCT_PACKAGES += \
+    android.hardware.secure_element-service.thales-st33
 
 # Sensors
 PRODUCT_PACKAGES += \
     android.hardware.sensors-service.samsung-multihal \
-    hals.conf
+    hals.conf \
+    init.sensorhub.rc
+
+# Shipping API Levels
+PRODUCT_SHIPPING_API_LEVEL := 34
+
+# Soong Namespaces
+PRODUCT_SOONG_NAMESPACES += \
+    bootable/deprecated-ota \
+    hardware/google/interfaces \
+    hardware/google/pixel \
+    hardware/qcom-caf/wlan \
+    hardware/samsung \
+    hardware/samsung_slsi-linaro/exynos/cpboot_v3
+
+# Storage
+$(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
+
+# Teegris
+PRODUCT_PACKAGES += \
+    teegris.rc \
+    teegris_tui.rc
 
 # Thermal
 PRODUCT_PACKAGES += \
@@ -228,13 +283,35 @@ PRODUCT_PACKAGES += \
     android.hardware.usb.gadget-service.samsung \
     init.s5e9945.usb.rc
 
+# Vendor service manager
+PRODUCT_PACKAGES += \
+    vndservicemanager
+
 # Vibrator
-PRODUCT_PACKAGES += android.hardware.vibrator-service.samsung
+PRODUCT_PACKAGES += \
+    android.hardware.vibrator-service.samsung
 
 # Wi-Fi
 PRODUCT_PACKAGES += \
     android.hardware.wifi-service \
     hostapd \
+    indoorchannel.info \
+    init.insmod.sh \
     libcld80211 \
+    p2p_supplicant_overlay.conf \
+    wifi_qcom_ap_exynos.rc \
+    wifi_sec.rc \
     wpa_supplicant \
-    wpa_supplicant.conf
+    wpa_supplicant.conf \
+    wpa_supplicant_overlay.conf
+
+PRODUCT_COPY_FILES += \
+    $(COMMON_PATH)/configs/wifi/qcom_cfg.ini:$(TARGET_COPY_OUT_VENDOR)/firmware/wlan/kiwi_v2/qcom_cfg.ini \
+    $(COMMON_PATH)/configs/wifi/wlan-connection-roaming.ini:$(TARGET_COPY_OUT_VENDOR)/firmware/wlan-connection-roaming.ini \
+    $(COMMON_PATH)/configs/wifi/wlan-connection-roaming-backup.ini:$(TARGET_COPY_OUT_VENDOR)/firmware/wlan-connection-roaming-backup.ini
+
+# Setup dalvik vm configs
+$(call inherit-product, frameworks/native/build/phone-xhdpi-6144-dalvik-heap.mk)
+
+# Call the proprietary setup
+$(call inherit-product, vendor/samsung/s5e9945/s5e9945-vendor.mk)

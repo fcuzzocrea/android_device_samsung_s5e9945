@@ -1,17 +1,6 @@
 #
-# Copyright 2014 The Android Open-Source Project
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# SPDX-FileCopyrightText: 2025 The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
 #
 
 COMMON_PATH := device/samsung/s5e9945
@@ -20,19 +9,22 @@ COMMON_PATH := device/samsung/s5e9945
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv9-2a
 TARGET_CPU_ABI := arm64-v8a
-TARGET_CPU_VARIANT := cortex-a76
+TARGET_CPU_VARIANT := generic
+TARGET_CPU_VARIANT_RUNTIME := cortex-a76
 
 # Compatibility Matrix
 DEVICE_MATRIX_FILE := $(COMMON_PATH)/compatibility_matrix.xml
 
-# DTS
-BOARD_DTB_CFG := $(COMMON_PATH)/configs/kernel/dtb.cfg
+# Device Manifest
+DEVICE_MANIFEST_FILE := $(COMMON_PATH)/manifest.xml
+
+# DTB
+BOARD_DTB_CFG := $(COMMON_PATH)/configs/kernel/s5e9945.cfg
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
+
+# DTBO
 BOARD_INCLUDE_RECOVERY_DTBO := true
 BOARD_KERNEL_SEPARATED_DTBO := true
-
-# Display
-TARGET_USES_VULKAN := true
 
 # Filesystem
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
@@ -48,10 +40,17 @@ TARGET_COPY_OUT_SYSTEM_EXT := system_ext
 TARGET_COPY_OUT_VENDOR := vendor
 TARGET_COPY_OUT_VENDOR_DLKM := vendor_dlkm
 
--include vendor/lineage/config/BoardConfigReservedSize.mk
-
 # Firmware
 TARGET_NO_BOOTLOADER := true
+
+# Framework Matrix
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := \
+    $(COMMON_PATH)/device_framework_matrix.xml \
+    hardware/samsung/vintf/samsung_framework_compatibility_matrix.xml \
+    vendor/lineage/config/device_framework_matrix.xml
+
+# Graphics
+TARGET_USES_VULKAN := true
 
 # Kernel
 BOARD_BOOT_HEADER_VERSION := 4
@@ -59,22 +58,14 @@ BOARD_BOOTCONFIG := androidboot.serialconsole=0
 BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_MKBOOTIMG_ARGS := --header_version $(BOARD_BOOT_HEADER_VERSION)
 BOARD_MKBOOTIMG_INIT_ARGS := $(BOARD_MKBOOTIMG_ARGS)
-TARGET_KERNEL_CONFIG := \
-    $(shell KCONFIG_CONFIG=kernel/samsung/s5e9945/arch/arm64/configs/erd9945_u_gki_defconfig \
-    kernel/samsung/s5e9945/scripts/kconfig/merge_config.sh -m -r \
-    kernel/samsung/s5e9945/arch/arm64/configs/gki_defconfig \
-    kernel/samsung/s5e9945/arch/arm64/configs/s5e9945-base_defconfig \
-    kernel/samsung/s5e9945/arch/arm64/configs/s5e9945-bazel_defconfig \
-    kernel/samsung/s5e9945/arch/arm64/configs/s5e9945_user.cfg \
-    kernel/samsung/s5e9945/arch/arm64/configs/s5e9945-user_defconfig \
-    1>/dev/null; echo erd9945_u_gki_defconfig)
+TARGET_KERNEL_CONFIG := gki_defconfig erd9945_gki.config
 TARGET_KERNEL_SOURCE := kernel/samsung/s5e9945
 
 # Lineage health
 $(call soong_config_set,lineage_health,charging_control_charging_path,/sys/class/power_supply/battery/hmt_ta_charge)
-$(call soong_config_set,lineage_health,charging_control_charging_enabled,0)
-$(call soong_config_set,lineage_health,charging_control_charging_disabled,1)
-$(call soong_config_set,lineage_health,charging_control_charging_bypass,true)
+$(call soong_config_set,lineage_health,charging_control_charging_enabled,1)
+$(call soong_config_set,lineage_health,charging_control_charging_disabled,0)
+$(call soong_config_set,lineage_health,charging_control_charging_bypass,false)
 $(call soong_config_set,lineage_health,charging_control_charging_toggle,true)
 $(call soong_config_set,lineage_health,charging_control_charging_deadline,false)
 $(call soong_config_set,lineage_health,fast_charge_node,/sys/class/sec/switch/afc_disable)
@@ -82,28 +73,28 @@ $(call soong_config_set,lineage_health,fast_charge_value_none,1)
 $(call soong_config_set,lineage_health,fast_charge_value_fast_charge,0)
 
 # Modules
-BOARD_RECOVERY_RAMDISK_KERNEL_MODULES_LOAD := $(shell cat $(COMMON_PATH)/configs/kernel/modules/ramdisk) $(BOARD_RECOVERY_RAMDISK_KERNEL_MODULES_LOAD)
-BOARD_SYSTEM_KERNEL_MODULES_LOAD := $(shell cat $(COMMON_PATH)/configs/kernel/modules/system)
+BOARD_RECOVERY_RAMDISK_KERNEL_MODULES_LOAD :=  $(strip $(shell cat $(COMMON_PATH)/configs/kernel/modules/ramdisk) $(BOARD_RECOVERY_RAMDISK_KERNEL_MODULES_LOAD))
+BOARD_SYSTEM_KERNEL_MODULES_LOAD :=  $(strip $(shell cat $(COMMON_PATH)/configs/kernel/modules/system))
 BOARD_VENDOR_KERNEL_MODULES_LOAD := kiwi_v2.ko sec_debug_ssld_info.ko cfg80211.ko
 BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(BOARD_RECOVERY_RAMDISK_KERNEL_MODULES_LOAD)
 BOOT_KERNEL_MODULES := $(BOARD_RECOVERY_RAMDISK_KERNEL_MODULES_LOAD)
 RECOVERY_KERNEL_MODULES := $(BOARD_RECOVERY_RAMDISK_KERNEL_MODULES_LOAD)
 SYSTEM_KERNEL_MODULES := $(BOARD_SYSTEM_KERNEL_MODULES_LOAD)
 
-# Partitions - Classic
+# Partitions
 BOARD_BOOTIMAGE_PARTITION_SIZE := 67108864
 BOARD_CACHEIMAGE_PARTITION_SIZE := 367001600
 BOARD_DTBOIMG_PARTITION_SIZE := 8388608
 BOARD_FLASH_BLOCK_SIZE := 4096
 BOARD_INIT_BOOT_IMAGE_PARTITION_SIZE := 16777216
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 100663296
-BOARD_ROOT_EXTRA_FOLDERS := efs
-BOARD_SUPER_PARTITION_GROUPS := samsung_dynamic_partitions
 BOARD_SUPER_PARTITION_SIZE := 12981370880
-BOARD_USES_METADATA_PARTITION := true
 BOARD_VENDOR_BOOTIMAGE_PARTITION_SIZE := $(BOARD_BOOTIMAGE_PARTITION_SIZE)
+BOARD_ROOT_EXTRA_FOLDERS := efs
+BOARD_USES_METADATA_PARTITION := true
 
-# Partitions - Dynamic
+# Partitions - Dynamic Partitions Configurations
+BOARD_SAMSUNG_DYNAMIC_PARTITIONS_SIZE := $(shell echo $$(( $(BOARD_SUPER_PARTITION_SIZE) - 4 * 1024**2 )))
 BOARD_SAMSUNG_DYNAMIC_PARTITIONS_PARTITION_LIST := \
     product \
     system \
@@ -111,7 +102,8 @@ BOARD_SAMSUNG_DYNAMIC_PARTITIONS_PARTITION_LIST := \
     system_ext \
     vendor \
     vendor_dlkm
-BOARD_SAMSUNG_DYNAMIC_PARTITIONS_SIZE := 12977176576
+BOARD_SUPER_PARTITION_GROUPS := samsung_dynamic_partitions
+-include vendor/lineage/config/BoardConfigReservedSize.mk
 
 # Platform
 BOARD_VENDOR := samsung
@@ -120,11 +112,9 @@ TARGET_BOOTLOADER_BOARD_NAME := s5e9945
 TARGET_SOC := s5e9945
 
 # Properties
-TARGET_PRODUCT_PROP += $(COMMON_PATH)/configs/props/product.prop
-TARGET_VENDOR_PROP += $(COMMON_PATH)/configs/props/vendor.prop
-
-# RIL
- $(call soong_config_set,cbd,protocol,sipc)
+TARGET_PRODUCT_PROP += $(COMMON_PATH)/product.prop
+TARGET_SYSTEM_PROP += $(COMMON_PATH)/product.prop
+TARGET_VENDOR_PROP += $(COMMON_PATH)/vendor.prop
 
 # Ramdisks
 BOARD_RAMDISK_USE_LZ4 := true
@@ -139,19 +129,20 @@ TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 
 # Releasetools
-TARGET_RELEASETOOLS_EXTENSIONS := $(COMMON_PATH)
+TARGET_RELEASETOOLS_EXTENSIONS := $(COMMON_PATH)/releasetools
 
 # RIL
 ENABLE_VENDOR_RIL_SERVICE := true
+$(call soong_config_set,cbd,protocol,sipc)
+
+# Security
+VENDOR_SECURITY_PATCH := 2025-08-01
 
 # SELinux
 include device/lineage/sepolicy/exynos/sepolicy.mk
 BOARD_SEPOLICY_TEE_FLAVOR := teegris
 include device/samsung_slsi/sepolicy/sepolicy.mk
 BOARD_VENDOR_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/vendor
-
-# Security
-VENDOR_SECURITY_PATCH := 2025-08-01
 
 # USB
 $(call soong_config_set,samsungUsbGadgetVars,gadget_name,17900000.dwc3)
@@ -164,13 +155,6 @@ BOARD_AVB_RECOVERY_KEY_PATH := external/avb/test/data/testkey_rsa4096.pem
 BOARD_AVB_RECOVERY_ROLLBACK_INDEX := 0
 BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
 
-# VINTF
-DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := \
-    $(COMMON_PATH)/configs/vintf/compatibility_matrix.device.xml \
-    hardware/samsung/vintf/samsung_framework_compatibility_matrix.xml \
-    vendor/lineage/config/device_framework_matrix.xml
-DEVICE_MANIFEST_FILE := $(COMMON_PATH)/configs/vintf/manifest.xml
-
 # Wi-Fi
 BOARD_WLAN_DEVICE                             := qcwcn
 WIFI_HAL_INTERFACE_COMBINATIONS               := {{{STA}, 1}, {{AP}, 1}}, {{{STA}, 1}, {{P2P, NAN}, 1}}, {{{AP}, 2}}, {{{STA}, 2}}
@@ -180,3 +164,6 @@ BOARD_HOSTAPD_CONFIG_80211W_MFP_OPTIONAL      := true
 WIFI_HIDL_UNIFIED_SUPPLICANT_SERVICE_RC_ENTRY := true
 WIFI_FEATURE_HOSTAPD_11AX                     := true
 WPA_SUPPLICANT_VERSION                        := VER_0_8_X
+
+# Call the proprietary setup
+include vendor/samsung/s5e9945/BoardConfigVendor.mk
