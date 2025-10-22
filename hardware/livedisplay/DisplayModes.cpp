@@ -53,14 +53,14 @@ bool DisplayModes::isSupported() {
 
 // Methods from ::vendor::lineage::livedisplay::V2_0::IDisplayModes follow.
 ndk::ScopedAStatus DisplayModes::getDisplayModes(std::vector<DisplayMode>* _aidl_return) {
-    int value = kModeMap.size();
     std::vector<DisplayMode> modes;
+    modes.reserve(kModeMap.size());
 
-    for (const auto& entry : kModeMap) {
-        if (entry.first < value) modes.push_back({entry.first, entry.second});
+    for (const auto& [id, name] : kModeMap) {
+        modes.push_back({id, name});
     }
 
-    *_aidl_return = modes;
+    *_aidl_return = std::move(modes);
     return ndk::ScopedAStatus::ok();
 }
 
