@@ -53,6 +53,7 @@
 /(vendor|system/vendor)/bin/hw/android\.hardware\.secure_element-service\.thales-st33   u:object_r:hal_secure_element_default_exec:s0
 /(vendor|system/vendor)/bin/hw/android\.hardware\.vibrator-service\.s5e9945             u:object_r:hal_vibrator_default_exec:s0
 /(vendor|system/vendor)/bin/hw/samsung\.software\.media\.c2@[0-9]\.[0-9]-service        u:object_r:mediacodec_exec:s0
+/(vendor|system/vendor)/bin/hw/vendor\.lineage\.livedisplay-service\.s5e9945            u:object_r:hal_lineage_livedisplay_exynos_exec:s0
 /(vendor|system/vendor)/bin/hw/vendor\.samsung\.hardware\.camera\.provider-service_64   u:object_r:hal_camera_default_exec:s0
 /(vendor|system/vendor)/bin/hw/vendor\.samsung\.hardware\.gnss-service                  u:object_r:hal_gnss_default_exec:s0
 /(vendor|system/vendor)/bin/hw/vendor.samsung_slsi.hardware.enn_aidl-service            u:object_r:hal_enn_default_exec:s0

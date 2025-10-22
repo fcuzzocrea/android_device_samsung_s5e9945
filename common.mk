@@ -121,6 +121,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     vendor.lineage.health-service.default
 
+# Livedisplay
+PRODUCT_PACKAGES += \
+    vendor.lineage.livedisplay-service.s5e9945
+
 # Media
 PRODUCT_PACKAGES += \
     media_codecs_c2.xml \

@@ -1,0 +1,45 @@
+//
+// SPDX-FileCopyrightText: 2019-2025 The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+filegroup {
+    name: "vendor.lineage.livedisplay-s5e9945",
+    srcs: [
+        "DisplayColorCalibration.cpp",
+        "DisplayModes.cpp",
+        "ReadingEnhancement.cpp",
+        "SunlightEnhancement.cpp",
+        "service.cpp",
+    ],
+}
+
+cc_defaults {
+    name: "livedisplay_s5e9945_defaults",
+    defaults: ["hidl_defaults"],
+    relative_install_path: "hw",
+    shared_libs: [
+        "libbase",
+        "libbinder_ndk",
+        "libbinder",
+        "libutils",
+        "vendor.lineage.livedisplay-V1-ndk",
+    ],
+    header_libs: [
+        "vendor.lineage.livedisplay-s5e9945-headers",
+    ],
+}
+
+cc_library_headers {
+    name: "vendor.lineage.livedisplay-s5e9945-headers",
+    vendor_available: true,
+    export_include_dirs: ["include"],
+}
+
+cc_binary {
+    name: "vendor.lineage.livedisplay-service.s5e9945",
+    defaults: ["livedisplay_s5e9945_defaults"],
+    init_rc: ["vendor.lineage.livedisplay-service.s5e9945.rc"],
+    srcs: [":vendor.lineage.livedisplay-s5e9945"],
+    vendor: true,
+}
