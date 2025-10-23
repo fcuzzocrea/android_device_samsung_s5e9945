@@ -32,6 +32,28 @@
             "ResetOnInit": true
         },
         {
+            "Name": "EmsTuneReqMode",
+            "Path": "/sys/kernel/ems/emstune/req_mode",
+            "Values": [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+            ],
+            "Comments": [
+                "0 => Normal Mode",
+                "1 => Power-Scenario Mode",
+                "2 => Performance Mode",
+                "3 => Game Mode",
+                "4 => Balance Mode",
+                "5 => Camera Mode"
+            ],
+            "DefaultIndex": 1,
+            "ResetOnInit": true
+        },
+        {
             "Name": "EMSTUNE_REQLEVEL",
             "Path": "/sys/kernel/ems/emstune/req_level",
             "Values": [
