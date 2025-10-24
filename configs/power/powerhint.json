@@ -69,7 +69,6 @@
             "DefaultIndex": 0,
             "ResetOnInit": true
         },
-
         {
             "Name": "CPUBigPlusClusterMinFreq",
             "Path": "/sys/devices/system/cpu/cpu9/cpufreq/scaling_min_freq",
@@ -168,7 +167,7 @@
                 "0",
                 "1"
             ],
-            "DefaultIndex": 0,
+            "DefaultIndex": 1,
             "ResetOnInit": true
         },
 
@@ -226,15 +225,6 @@
             ],
             "DefaultIndex": 0,
             "ResetOnInit": true
-        },
-        {
-            "Name": "PMQoSCpuDmaLatency",
-            "Path": "/dev/cpu_dma_latency",
-            "Values": [
-                "0x0000002c",
-                "0x00000064"
-            ],
-            "HoldFd": true
         },
         {
             "Name": "DoubleTapToWakeEnable",
@@ -378,12 +368,6 @@
             "Value": "40"
         },
         {
-            "PowerHint": "LAUNCH",
-            "Node": "PMQoSCpuDmaLatency",
-            "Duration": 1000,
-            "Value": "0x0000002c"
-        },
-        {
             "PowerHint": "CAMERA_LAUNCH",
             "Node": "CPULittleClusterMinFreq",
             "Duration": 1000,
@@ -442,12 +426,6 @@
             "Node": "TAUClampBoost",
             "Duration": 1000,
             "Value": "40"
-        },
-        {
-            "PowerHint": "CAMERA_LAUNCH",
-            "Node": "PMQoSCpuDmaLatency",
-            "Duration": 1000,
-            "Value": "0x0000002c"
         },
         {
             "PowerHint": "CAMERA_STREAMING_SECURE",
@@ -540,22 +518,16 @@
             "Value": "40"
         },
         {
-            "PowerHint": "CAMERA_SHOT",
-            "Node": "PMQoSCpuDmaLatency",
-            "Duration": 500,
-            "Value": "0x0000002c"
-        },
-        {
             "PowerHint": "AUDIO_LAUNCH",
-            "Node": "PMQoSCpuDmaLatency",
+            "Node": "TAUClampBoost",
             "Duration": 2000,
-            "Value": "0x0000002c"
+            "Value": "1"
         },
         {
             "PowerHint": "AUDIO_STREAMING_LOW_LATENCY",
-            "Node": "PMQoSCpuDmaLatency",
+            "Node": "TAUClampBoost",
             "Duration": 0,
-            "Value": "0x0000002c"
+            "Value": "1"
         },
         {
             "PowerHint": "EXPENSIVE_RENDERING",
@@ -687,9 +659,9 @@
         },
         {
             "PowerHint": "ML_ACC",
-            "Node": "PMQoSCpuDmaLatency",
+            "Node": "TAUClampBoost",
             "Duration": 2000,
-            "Value": "0x0000002c"
+            "Value": "1"
         },
         {
             "PowerHint": "INTERACTIVE",
