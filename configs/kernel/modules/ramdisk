@@ -223,7 +223,6 @@ sec_debug_slab_info.ko
 sec_debug_test.ko
 sec_debug_hw_param.ko
 sec_debug_wdd_info.ko
-input_booster_lkm.ko
 sdp.ko
 vbus_notifier.ko
 sec_common_fn.ko
