@@ -133,21 +133,74 @@ on init
     chown root system /sys/devices/platform/17000010.devfreq_mif/devfreq/17000010.devfreq_mif/scaling_devfreq_min
     chown root system /sys/devices/platform/17000010.devfreq_mif/devfreq/17000010.devfreq_mif/scaling_devfreq_max
 
-    # System Performance - Permissions for input_booster
-    chown system system /sys/class/input_booster/touch/level
-    chown system system /sys/class/input_booster/touch/head
-    chown system system /sys/class/input_booster/touch/tail
-    chown system system /sys/class/input_booster/multitouch/head
-    chown system system /sys/class/input_booster/multitouch/tail
-    chown system system /sys/class/input_booster/multitouch/level
-    chown system system /sys/class/input_booster/ib_mode_state
-    chmod 0664 /sys/class/input_booster/touch/level
-    chmod 0664 /sys/class/input_booster/touch/head
-    chmod 0664 /sys/class/input_booster/touch/tail
-    chmod 0664 /sys/class/input_booster/multitouch/level
-    chmod 0664 /sys/class/input_booster/multitouch/head
-    chmod 0664 /sys/class/input_booster/multitouch/tail
-    chmod 0664 /sys/class/input_booster/ib_mode_state
+    # System Performance - EPIC interfaces
+    chown system system /dev/mode
+    chown system system /dev/exynos-profiler
+    chown system system /sys/devices/platform/exynos-profiler/control/control_profile
+    chown system system /sys/devices/platform/exynos-profiler/control/set_margin
+    chown system system /sys/devices/platform/exynos-profiler/control/user_target_fps
+    chown system system /dev/cpu_dma_latency
+    chown system system /dev/cluster0_freq_min
+    chown system system /dev/cluster1_freq_min
+    chown system system /dev/cluster2_freq_min
+    chown system system /dev/cluster3_freq_min
+    chown system system /dev/cluster0_freq_max
+    chown system system /dev/cluster1_freq_max
+    chown system system /dev/cluster2_freq_max
+    chown system system /dev/cluster3_freq_max
+    chown system system /dev/cpu_online_min
+    chown system system /dev/cpu_online_max
+    chown system system /dev/gpu_freq_min
+    chown system system /dev/gpu_freq_max
+    chown system system /dev/bus_throughput
+    chown system system /dev/bus_throughput_max
+    chown system system /dev/device_throughput
+    chown system system /dev/device_throughput_max
+    chown system system /dev/intcam_throughput
+    chown system system /dev/intcam_throughput_max
+    chown system system /dev/display_throughput
+    chown system system /dev/display_throughput_max
+    chown system system /dev/cam_throughput
+    chown system system /dev/cam_throughput_max
+    chown system system /dev/npu_throughput
+    chown system system /dev/npu_throughput_max
+    chown system system /dev/npu0_throughput
+    chown system system /dev/npu0_throughput_max
+    chown system system /dev/npu1_throughput
+    chown system system /dev/npu1_throughput_max
+    chown system system /dev/aud_throughput
+    chown system system /dev/aud_throughput_max
+    chown system system /dev/dnc_throughput
+    chown system system /dev/dnc_throughput_max
+    chown system system /dev/mfc_throughput
+    chown system system /dev/mfc_throughput_max
+    chown system system /dev/mfc1_throughput
+    chown system system /dev/mfc1_throughput_max
+    chown system system /dev/isp_throughput
+    chown system system /dev/isp_throughput_max
+    chown system system /dev/mfc1_throughput
+    chown system system /dev/mfc1_throughput_max
+    chown system system /dev/dsp_throughput
+    chown system system /dev/dsp_throughput_max
+    chown system system /dev/alive_throughput
+    chown system system /dev/alive_throughput_max
+    chown system system /dev/vts_throughput
+    chown system system /dev/vts_throughput_max
+    chown system system /dev/hsi0_throughput
+    chown system system /dev/hsi0_throughput_max
+    chown system system /dev/ufd_throughput
+    chown system system /dev/ufd_throughput_max
+    chown system system /dev/mfd_throughput
+    chown system system /dev/mfd_throughput_max
+    chown system system /dev/vpc_throughput
+    chown system system /dev/vpc_throughput_max
+    chown system system /dev/chub_throughput
+    chown system system /dev/chub_throughput_max
+    chown system system /sys/kernel/gpu/gpu_ifpo_runtime_control
+    chown system system /sys/devices/platform/exynos-ufcc/ufc/cpufreq_min_limit
+    chown system system /sys/devices/platform/exynos-ufcc/ucc/cstate_control
+    chown system system /sys/devices/platform/exynos-ufcc/ucc/cstate_control_level
+    chown system system /sys/devices/platform/exynos-dsufreq/dsufreq/scaling_min_freq
 
     # exynos-ufcc
     chown root system /sys/devices/platform/exynos-ufcc/ufc/cpufreq_min_limit
