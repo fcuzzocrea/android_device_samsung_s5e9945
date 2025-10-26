@@ -29,6 +29,9 @@ from extract_utils.main import (
 namespace_imports = [
     'device/samsung/s5e9945',
     'hardware/samsung',
+    'hardware/samsung_slsi-linaro/exynos',
+    'hardware/samsung_slsi-linaro/graphics',
+    'hardware/samsung_slsi-linaro/sgpu',
 ]
 
 
@@ -36,13 +39,6 @@ blob_fixups: blob_fixups_user_type = {
     'vendor/bin/hermesd': blob_fixup()
         .binary_regex_replace(b'security.securehw.available', b'vendor.securehw.available\x00\x00')
         .binary_regex_replace(b'security.securenvm.available', b'vendor.securenvm.available\x00\x00'),
-    'vendor/bin/hw/android.hardware.graphics.composer3-service.exynos': blob_fixup()
-        .replace_needed(
-            'android.hardware.graphics.composer@2.1-resources.so',
-            'android.hardware.graphics.composer@2.1-resources_samsung.so')
-        .replace_needed(
-            'android.hardware.graphics.composer@2.2-resources.so',
-            'android.hardware.graphics.composer@2.2-resources_samsung.so'),
     'vendor/bin/hw/gps.sh': blob_fixup()
         .regex_replace('apex/com.samsung.android.gnss.lsi.root', 'vendor')
         .regex_replace('bin/gpsd_K43', 'bin/hw/gpsd_K43')
@@ -58,12 +54,6 @@ blob_fixups: blob_fixups_user_type = {
     'vendor/etc/init/vendor.samsung.hardware.camera.provider-service_64.rc': blob_fixup()
         .regex_replace('vendor_secdir w', 'w')
         .regex_replace('vendor_secdir', 'camera'),
-    'vendor/etc/vintf/manifest/sec_c2_manifest_default0_1_2.xml': blob_fixup()
-        .regex_replace('.*t0.*\n', ''),
-    'vendor/lib64/android.hardware.graphics.composer@2.2-resources_samsung.so': blob_fixup()
-        .replace_needed(
-            'android.hardware.graphics.composer@2.1-resources.so',
-            'android.hardware.graphics.composer@2.1-resources_samsung.so'),
     (
         'vendor/lib64/hw/audio.primary.s5e9945.so',
         'vendor/lib64/libaudioproxy2.so',
@@ -90,8 +80,6 @@ blob_fixups: blob_fixups_user_type = {
         'vendor/lib64/libaudioroute_samsung.so',
     ): blob_fixup()
         .replace_needed('libtinyalsa.so', 'libtinyalsa_samsung.so'),
-    'vendor/lib64/libexynosgraphicbuffer.so': blob_fixup()
-        .add_needed('libshim_ui.so'),
     (
         'vendor/lib64/libgraphgen.so',
     ): blob_fixup()

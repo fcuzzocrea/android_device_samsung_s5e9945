@@ -124,7 +124,7 @@
             "Path": "/sys/kernel/gpu/gpu_min_clock",
             "Values": [
                 "1095000",
-                "400000",
+                "450000",
                 "350000",
                 "0"
             ],
@@ -652,7 +652,13 @@
             "PowerHint": "EXPENSIVE_RENDERING",
             "Node": "GPUMinFreq",
             "Duration": 0,
-            "Value": "400000"
+            "Value": "450000"
+        },
+        {
+            "PowerHint": "EXPENSIVE_RENDERING",
+            "Node": "EmsTaskBoost",
+            "Duration": 0,
+            "Value": "1"
         },
         {
             "PowerHint": "GAME",

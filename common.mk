@@ -40,6 +40,13 @@ PRODUCT_COPY_FILES += \
 
 TARGET_EXCLUDES_AUDIOFX := true
 
+# Camera
+PRODUCT_PACKAGES += \
+    libepicoperator \
+    libhypervintf \
+    libhwjpeg \
+    libsensorndkbridge
+
 # Cgroup and task_profiles
 PRODUCT_PACKAGES += \
     cgroups.json \
@@ -48,6 +55,23 @@ PRODUCT_PACKAGES += \
 # Charger
 PRODUCT_PACKAGES += \
     charger_res_images_vendor
+
+# Codec2
+PRODUCT_PACKAGES += \
+    samsung.hardware.media.c2@1.2-service \
+    libExynosC2H264Dec \
+    libExynosC2H264Enc \
+    libExynosC2HevcDec \
+    libExynosC2HevcEnc \
+    libExynosC2Vp8Dec \
+    libExynosC2Vp8Enc \
+    libExynosC2Vp9Dec \
+    libExynosC2Vp9Enc \
+    libExynosC2Av1Dec
+
+PRODUCT_PACKAGES += \
+    codec2.vendor.base.policy \
+    codec2.vendor.ext.policy
 
 # DRM
 PRODUCT_PACKAGES += \
@@ -67,6 +91,14 @@ PRODUCT_PACKAGES += \
     init.udfps.rc
 
 # Graphics
+PRODUCT_PACKAGES += \
+    android.hardware.composer.hwc3-service.slsi \
+    android.hardware.graphics.allocator-service-sgr \
+    android.hardware.graphics.mapper@4.0-impl-sgr \
+    libdrm_sgpu \
+    libexynosgraphicbuffer_public \
+    libion_exynos
+
 PRODUCT_PACKAGES += \
     calib_data_atc.xml \
     calib_data_bypass.xml \
@@ -130,6 +162,10 @@ PRODUCT_PACKAGES += \
     media_codecs_c2.xml \
     media_codecs_performance_c2.xml \
     media_profiles_V1_0.xml
+
+# Memtrack
+PRODUCT_PACKAGES += \
+    android.hardware.memtrack-service.exynos
 
 # NFC
 PRODUCT_PACKAGES += \
@@ -237,6 +273,11 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     SamsungDoze
 
+# SBWC
+ PRODUCT_PACKAGES += \
+     vendor.samsung_slsi.hardware.SbwcDecompService@1.0-service \
+     libsbwchelper
+
 # Secure Element
 PRODUCT_PACKAGES += \
     android.hardware.secure_element-service.thales-st33
@@ -316,6 +357,11 @@ PRODUCT_COPY_FILES += \
 
 # Setup dalvik vm configs
 $(call inherit-product, frameworks/native/build/phone-xhdpi-6144-dalvik-heap.mk)
+
+# Call Samsung LSI board support package makefiles
+include hardware/samsung_slsi-linaro/config/BoardConfig9945.mk
+$(call inherit-product, hardware/samsung_slsi-linaro/graphics/base/hwcomposer_property.mk)
+$(call inherit-product, hardware/samsung_slsi-linaro/config/config.mk)
 
 # Call the proprietary setup
 $(call inherit-product, vendor/samsung/s5e9945/s5e9945-vendor.mk)

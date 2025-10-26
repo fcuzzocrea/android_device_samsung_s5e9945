@@ -165,5 +165,8 @@ WIFI_HIDL_UNIFIED_SUPPLICANT_SERVICE_RC_ENTRY := true
 WIFI_FEATURE_HOSTAPD_11AX                     := true
 WPA_SUPPLICANT_VERSION                        := VER_0_8_X
 
+# Call Samsung LSI board support package
+include hardware/samsung_slsi-linaro/config/BoardConfig9945.mk
+
 # Call the proprietary setup
 include vendor/samsung/s5e9945/BoardConfigVendor.mk
