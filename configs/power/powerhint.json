@@ -344,48 +344,6 @@
         },
         {
             "PowerHint": "INTERACTION",
-            "Node": "CPULittleClusterMinFreq",
-            "Duration": 250,
-            "Value": "768000"
-        },
-        {
-            "PowerHint": "INTERACTION",
-            "Node": "CPUMidClusterMinFreq",
-            "Duration": 250,
-            "Value": "1152000"
-        },
-        {
-            "PowerHint": "INTERACTION",
-            "Node": "CPUBigClusterMinFreq",
-            "Duration": 250,
-            "Value": "1152000"
-        },
-        {
-            "PowerHint": "INTERACTION",
-            "Node": "CPUBigPlusClusterMinFreq",
-            "Duration": 250,
-            "Value": "1152000"
-        },
-        {
-            "PowerHint": "INTERACTION",
-            "Node": "MemFreq",
-            "Duration": 250,
-            "Value": "1014000"
-        },
-        {
-            "PowerHint": "INTERACTION",
-            "Node": "DsuFreq",
-            "Duration": 250,
-            "Value": "960000"
-        },
-        {
-            "PowerHint": "INTERACTION",
-            "Node": "EmsTuneReqMode",
-            "Duration": 0,
-            "Value": "0"
-        },
-        {
-            "PowerHint": "INTERACTION",
             "Node": "GPUIfpoRuntimeControl",
             "Duration": 0,
             "Value": "0"
