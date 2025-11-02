@@ -2774,7 +2774,7 @@
     <!-- Screen brightness used to dim the screen while dozing in a very low power state.
          May be less than the minimum allowed brightness setting
          that can be set by the user. -->
-     <item name="config_screenBrightnessDozeFloat" format="float" type="dimen">0.013960784</item>
+     <item name="config_screenBrightnessDozeFloat" format="float" type="dimen">0.023529412</item>
 
     <!-- If true, the display will be shifted around in ambient mode. -->
     <bool name="config_enableBurnInProtection">true</bool>
