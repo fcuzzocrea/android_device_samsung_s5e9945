@@ -344,15 +344,27 @@
         },
         {
             "PowerHint": "INTERACTION",
-            "Node": "GPUIfpoRuntimeControl",
+            "Node": "EmsTuneReqMode",
             "Duration": 0,
             "Value": "0"
         },
         {
             "PowerHint": "INTERACTION",
-            "Node": "TAUClampBoost",
+            "Node": "EmsTaskBoost",
+            "Duration": 500,
+            "Value": "1"
+        },
+        {
+            "PowerHint": "INTERACTION",
+            "Node": "EmsTuneReqLevel",
             "Duration": 0,
             "Value": "1"
+        },
+        {
+            "PowerHint": "INTERACTION",
+            "Node": "GPUIfpoRuntimeControl",
+            "Duration": 0,
+            "Value": "0"
         },
         {
             "PowerHint": "LAUNCH",
