@@ -1,6 +1,7 @@
 #pragma once
 #include <dlfcn.h>
 #include <android-base/logging.h>
+#include <vector>
 #include <hardware/exynos/hdrInterface.h>
 
 class HdrInterfaceWrapper : public hdrInterface {
@@ -34,6 +35,10 @@ public:
 private:
     HdrInterfaceWrapper() = default;
 
+    struct Map { void* addr{}; size_t len{}; int fd{-1}; };
+    std::vector<Map> mMaps;
+    int mCoefSize[HDR_HW_MAX] = {0};  // cache per-HW size
+
     // -- dlopen handle and opaque object buffer constructed via vendor ctor --
     void* mLib = nullptr;
     void* mObj = nullptr;
@@ -51,6 +56,15 @@ private:
     using F_needProc      = bool (*)(void* self, HdrLayerInfo*);   // optional
     using F_setDebugMode  = void (*)(void* self, DebugMode);       // optional
 
+    using F_initHdrIf     = int  (*)(void*);
+    using F_deinitHdrIf   = void (*)(void*);
+    using F_initBufFds    = int  (*)(void*);
+    using F_deinitBufFds  = void (*)(void*);
+    using F_initCurIf     = int  (*)(void*);
+    using F_isAvail       = bool (*)(void*);
+    using F_getAttr       = int  (*)(void*);
+    using F_getSize       = int  (*)(void*);  // initHdrCoefSize()
+
     // ---- Resolved symbols ----
     Ctor    mCtor = nullptr;
     Dtor    mDtor = nullptr;
@@ -63,6 +77,16 @@ private:
     F_setLog      mSetLog = nullptr;
     F_needProc    mNeedProc = nullptr;      // optional
     F_setDebugMode mSetDbg = nullptr;       // optional
+
+    // And the members:
+    F_initHdrIf    mInitIf   = nullptr;
+    F_deinitHdrIf  mDeinitIf = nullptr;
+    F_initBufFds   mInitBuf  = nullptr;
+    F_deinitBufFds mDeinitBuf= nullptr;
+    F_initCurIf    mInitCur  = nullptr;
+    F_isAvail      mIsAvail  = nullptr;
+    F_getAttr      mGetAttr  = nullptr;
+    F_getSize      mGetSize  = nullptr;  // NEW: size getter
 
     // plumbing
     bool openLib();
