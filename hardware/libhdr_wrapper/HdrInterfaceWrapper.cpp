@@ -5,11 +5,11 @@
 namespace {
 constexpr const char* kLib = "/vendor/lib64/libhdrwrapper.so";
 
-// ctor/dtor you found:
-constexpr const char* kCtorSym = "_ZN13libhdrwrapperC1Ev"; // C2Ev also OK
-constexpr const char* kDtorSym = "_ZN13libhdrwrapperD1Ev"; // D2Ev also OK
+// ctor/dtor (you confirmed these exist)
+constexpr const char* kCtorSym = "_ZN13libhdrwrapperC1Ev"; // C2Ev also exists
+constexpr const char* kDtorSym = "_ZN13libhdrwrapperD1Ev"; // D2Ev also exists
 
-// Methods you found:
+// required methods (you confirmed)
 constexpr const char* kSetTargetSym = "_ZN13libhdrwrapper13setTargetInfoEP13HdrTargetInfo";
 constexpr const char* kSetHDRSym    = "_ZN13libhdrwrapper11setHDRlayerEb";
 constexpr const char* kSetIntentSym = "_ZN13libhdrwrapper15setRenderIntentEi";
@@ -18,17 +18,27 @@ constexpr const char* kSetLayerSym  = "_ZN13libhdrwrapper12setLayerInfoEiP12HdrL
 constexpr const char* kGetCoefSym   = "_ZN13libhdrwrapper14getHdrCoefDataEiRi";
 constexpr const char* kSetLogSym    = "_ZN13libhdrwrapper11setLogLevelEi";
 
-// Conservative opaque size for libhdrwrapper object. Update if you learn the true sizeof.
+// optional methods (present in earlier dump; probe safely)
+constexpr const char* kNeedProcSym  = "_ZN13libhdrwrapper18needHdrProcessingEP12HdrLayerInfo";
+constexpr const char* kSetDbgSym    = "_ZN13libhdrwrapper12setDebugModeE9DebugMode";
+
+// conservative opaque size for the vendor object
 constexpr size_t kObjSize = 1024;
 } // namespace
 
-void* HdrInterfaceWrapper::sym(void* h, const char* n) {
+void* HdrInterfaceWrapper::symReq(void* h, const char* n) {
     dlerror();
     void* p = dlsym(h, n);
     if (const char* e = dlerror()) {
         LOG(ERROR) << "dlsym(" << n << ") failed: " << e;
         return nullptr;
     }
+    return p;
+}
+void* HdrInterfaceWrapper::symOpt(void* h, const char* n) {
+    dlerror();
+    void* p = dlsym(h, n);
+    (void)dlerror(); // ignore errors
     return p;
 }
 
@@ -42,30 +52,32 @@ bool HdrInterfaceWrapper::openLib() {
 }
 
 bool HdrInterfaceWrapper::resolveSyms() {
-    mCtor      = reinterpret_cast<Ctor     >(sym(mLib, kCtorSym));
-    mDtor      = reinterpret_cast<Dtor     >(sym(mLib, kDtorSym));
-    mSetTarget = reinterpret_cast<SetTarget>(sym(mLib, kSetTargetSym));
-    mSetHDR    = reinterpret_cast<SetHDR   >(sym(mLib, kSetHDRSym));
-    mSetIntent = reinterpret_cast<SetIntent>(sym(mLib, kSetIntentSym));
-    mInitCoef  = reinterpret_cast<InitCoef >(sym(mLib, kInitCoefSym));
-    mSetLayer  = reinterpret_cast<SetLayer >(sym(mLib, kSetLayerSym));
-    mGetCoef   = reinterpret_cast<GetCoef  >(sym(mLib, kGetCoefSym));
-    mSetLog    = reinterpret_cast<SetLogLvl>(sym(mLib, kSetLogSym));
+    mCtor      = reinterpret_cast<Ctor>(symReq(mLib, kCtorSym));
+    mDtor      = reinterpret_cast<Dtor>(symReq(mLib, kDtorSym));
+    mSetTarget = reinterpret_cast<F_setTarget>(symReq(mLib, kSetTargetSym));
+    mSetHDR    = reinterpret_cast<F_setHDR>(symReq(mLib, kSetHDRSym));
+    mSetIntent = reinterpret_cast<F_setIntent>(symReq(mLib, kSetIntentSym));
+    mInitCoef  = reinterpret_cast<F_initCoef>(symReq(mLib, kInitCoefSym));
+    mSetLayer  = reinterpret_cast<F_setLayer>(symReq(mLib, kSetLayerSym));
+    mGetCoef   = reinterpret_cast<F_getCoefData>(symReq(mLib, kGetCoefSym));
+    mSetLog    = reinterpret_cast<F_setLog>(symReq(mLib, kSetLogSym));
 
-    // Minimum: ctor, dtor, and all methods we plan to call
+    // optional
+    mNeedProc  = reinterpret_cast<F_needProc>(symOpt(mLib, kNeedProcSym));
+    mSetDbg    = reinterpret_cast<F_setDebugMode>(symOpt(mLib, kSetDbgSym));
+
     return mCtor && mDtor && mSetTarget && mSetHDR && mSetIntent &&
            mInitCoef && mSetLayer && mGetCoef && mSetLog;
 }
 
 bool HdrInterfaceWrapper::constructObj() {
-    // Allocate an aligned opaque buffer and run the vendor ctor on it.
     mObj = std::aligned_alloc(alignof(std::max_align_t), kObjSize);
     if (!mObj) {
-        LOG(ERROR) << "alloc libhdrwrapper object failed";
+        LOG(ERROR) << "alloc libhdrwrapper obj failed";
         return false;
     }
     std::memset(mObj, 0, kObjSize);
-    mCtor(mObj); // placement-construct
+    mCtor(mObj); // placement construct
     return true;
 }
 
@@ -75,9 +87,8 @@ void HdrInterfaceWrapper::destroyObj() {
     if (mLib) { dlclose(mLib);   mLib = nullptr; }
 }
 
-// ===== Public API =====
-
-hdrInterface* HdrInterfaceWrapper::Create(const char* /*docname*/) {
+// ===== Factory / dtor =====
+hdrInterface* HdrInterfaceWrapper::Create() {
     auto* w = new HdrInterfaceWrapper();
     if (!w->openLib() || !w->resolveSyms() || !w->constructObj()) {
         delete w;
@@ -86,31 +97,26 @@ hdrInterface* HdrInterfaceWrapper::Create(const char* /*docname*/) {
     return w;
 }
 
-void HdrInterfaceWrapper::Destroy(hdrInterface* p) {
-    delete static_cast<HdrInterfaceWrapper*>(p);
+void HdrInterfaceWrapper::Destroy(hdrInterface* inst) {
+    delete static_cast<HdrInterfaceWrapper*>(inst);
 }
 
 HdrInterfaceWrapper::~HdrInterfaceWrapper() {
     destroyObj();
 }
 
-// ===== Forwarders =====
+// ===== hdrInterface forwards =====
 
-int HdrInterfaceWrapper::setTargetInfo(struct HdrTargetInfo* tInfo) {
-    return mSetTarget ? mSetTarget(mObj, tInfo) : -HDR_ERR_PTR;
-}
-
-int HdrInterfaceWrapper::initHdrCoefBuildup(enum HdrHwId /*hw_id*/) {
-    return mInitCoef ? mInitCoef(mObj) : -HDR_ERR_PTR;
-}
-
-// The blob doesn’t publish a dedicated “size” API.
-// Many vendors return a size/fd via getHdrCoefData(hw, out).
 int HdrInterfaceWrapper::getHdrCoefSize(enum HdrHwId hw_id) {
+    // Blob doesn’t expose a dedicated size call; many return a size/fd via getHdrCoefData.
     if (!mGetCoef) return -HDR_ERR_PTR;
     int out = -1;
     int ret = mGetCoef(mObj, static_cast<int>(hw_id), out);
-    return (ret == 0) ? out : ret;  // if 'out' is size, this returns it; if fd, adjust your callers
+    return (ret == 0) ? out : ret;
+}
+
+int HdrInterfaceWrapper::setTargetInfo(struct HdrTargetInfo* tInfo) {
+    return mSetTarget ? mSetTarget(mObj, tInfo) : -HDR_ERR_PTR;
 }
 
 void HdrInterfaceWrapper::setHDRlayer(bool hasHdr) {
@@ -121,25 +127,26 @@ void HdrInterfaceWrapper::setRenderIntent(int rendIntent) {
     if (mSetIntent) mSetIntent(mObj, rendIntent);
 }
 
-// Blob signature is setLayerInfo(int, HdrLayerInfo*). We don’t know that struct layout;
-// start with nullptr — many flows only use layer index to select internal state.
-int HdrInterfaceWrapper::setLayerInfo(int layer_index, int /*dataspace*/,
-                                      void* /*static_md*/, int /*static_len*/,
-                                      void* /*dyn_md*/, int /*dyn_len*/,
-                                      bool /*premult*/, enum HdrBpc /*bpc*/,
-                                      enum RenderSource /*src*/, float* /*tf*/,
-                                      bool /*bypass*/) {
-    return mSetLayer ? mSetLayer(mObj, layer_index, nullptr) : -HDR_ERR_PTR;
+int HdrInterfaceWrapper::initHdrCoefBuildup(enum HdrHwId /*hw_id*/) {
+    return mInitCoef ? mInitCoef(mObj) : -HDR_ERR_PTR;
 }
 
-// Blob has only getHdrCoefData(int hw, int& out). No per-layer overload found;
-// ignore layer_index and surface the 'out' value via the parcel pointer field.
+bool HdrInterfaceWrapper::needHdrProcessing(struct HdrLayerInfo* lInfo) {
+    // Optional in blob; default false if not present.
+    return mNeedProc ? mNeedProc(mObj, lInfo) : false;
+}
+
+int HdrInterfaceWrapper::setLayerInfo(int layer_index, struct HdrLayerInfo* lInfo) {
+    return mSetLayer ? mSetLayer(mObj, layer_index, lInfo) : -HDR_ERR_PTR;
+}
+
 int HdrInterfaceWrapper::getHdrCoefData(enum HdrHwId hw_id, int /*layer_index*/,
                                         struct hdrCoefParcel* parcel) {
     if (!mGetCoef) return -HDR_ERR_PTR;
     int out = -1;
     int ret = mGetCoef(mObj, static_cast<int>(hw_id), out);
     if (ret == 0 && parcel) {
+        // We don’t yet know if 'out' is a size or an fd; surface it via the pointer field.
         parcel->hdrCoef = reinterpret_cast<void*>(static_cast<intptr_t>(out));
     }
     return ret;
@@ -149,17 +156,10 @@ int HdrInterfaceWrapper::getHdrCoefData(enum HdrHwId hw_id, struct hdrCoefParcel
     return getHdrCoefData(hw_id, /*layer_index*/0, parcel);
 }
 
-int HdrInterfaceWrapper::getHdrCoef(android_dataspace_t /*ids*/[], int /*mastering_luminance*/[],
-                                    int /*n_layer*/, android_dataspace_t /*ods*/,
-                                    int /*peak_luminance*/, struct hdrCoef /*output*/[4],
-                                    int /*res_map*/[4]) {
-    // The blob doesn’t export a direct getHdrCoef(); keep it a no-op for now.
-    // Return 0 to behave like other defaulted methods in the header.
-    return 0;
-    // If you prefer to signal "not available", return -HDR_ERR_NOPERM;
-}
-
 void HdrInterfaceWrapper::setLogLevel(int log_level) {
     if (mSetLog) mSetLog(mObj, log_level);
 }
 
+void HdrInterfaceWrapper::setDebugMode(enum DebugMode debug_mode) {
+    if (mSetDbg) mSetDbg(mObj, debug_mode);
+}
