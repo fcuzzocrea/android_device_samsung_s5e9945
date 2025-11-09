@@ -3,17 +3,17 @@ cc_library_shared {
     srcs: ["HdrInterfaceWrapper.cpp"],
     local_include_dirs: ["."],
     export_include_dirs: ["."],
-    vendor: true,                      // match libexynosdisplay partition
+    vendor: true,
     shared_libs: [
         "libdl",
-        "libbase",                     // or "liblog" if you use ALOG*
+        "liblog",
+        "libutils",
     ],
     header_libs: [
         "libsystem_headers",
         "libhdrinterface_header_s5e9945",
         "libhdr10p_meta_interface_header",
     ],
-    cflags: ["-Wno-unused-parameter"],
+    cflags: ["-Wno-unused-parameter", "-DLOG_TAG=\"libhdr_wrapper\"",],
     include_dirs: ["hardware/samsung_slsi-linaro/exynos/include"],
 }
-
