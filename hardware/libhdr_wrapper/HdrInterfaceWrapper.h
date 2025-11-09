@@ -54,54 +54,56 @@ class HdrInterfaceWrapper : public hdrInterface {
         size_t len{};
         int fd{-1};
     };
+  
     std::vector<Map> mMaps;
+
     int mCoefSize[HDR_HW_MAX] = {0};  // cache per-HW size
 
     // Function pointer types
     using Ctor = void (*)(void* self);
     using Dtor = void (*)(void* self);
-    using F_setTarget = int (*)(void* self, HdrTargetInfo*);
-    using F_setHDR = void (*)(void* self, bool);
-    using F_setIntent = void (*)(void* self, int);
-    using F_initCoef = int (*)(void* self);
-    using F_setLayer = int (*)(void* self, int, HdrLayerInfo*);
-    using F_getCoefData = int (*)(void* self, int /*hw*/, int& /*out*/);
-    using F_setLog = void (*)(void* self, int);
-    using F_needProc = bool (*)(void* self, HdrLayerInfo*);  // optional
-    using F_setDebugMode = void (*)(void* self, DebugMode);  // optional
+    using F_setTargetInfo = int (*)(void* self, HdrTargetInfo*);
+    using F_setHDRlayer = void (*)(void* self, bool);
+    using F_setRenderIntent = void (*)(void* self, int);
+    using F_initHdrCoefBuildup = int (*)(void* self);
+    using F_needHdrProcessing = bool (*)(void* self, HdrLayerInfo*);
+    using F_setLayerInfo = int (*)(void* self, int, HdrLayerInfo*);
+    using F_getHdrCoefData = int (*)(void* self, int /*hw*/, int& /*out*/);
+    using F_setLogLevel = void (*)(void* self, int);
+    using F_setDebugMode = void (*)(void* self, DebugMode);
 
     // Add function pointer types for the extra symbols
-    using F_initHdrIf = int (*)(void*);
-    using F_deinitHdrIf = void (*)(void*);
-    using F_initBufFds = int (*)(void*);
-    using F_deinitBufFds = void (*)(void*);
+    using F_initHdrInterfaces = int (*)(void*);
+    using F_deinitHdrInterfaces = void (*)(void*);
+    using F_initHdrBufFds = int (*)(void*);
+    using F_deinitHdrBufFds = void (*)(void*);
     using F_initCurIf = int (*)(void*);
-    using F_isAvail = bool (*)(void*);
-    using F_getAttr = int (*)(void*);
-    using F_getSize = int (*)(void*);  // initHdrCoefSize()
+    using F_isHdrAvailable = bool (*)(void*);
+    using F_getAttributes = int (*)(void*);
+    using F_initHdrCoefSize = int (*)(void*);  // initHdrCoefSize()
 
-    // Symbols resolved from the blob
+    // Symbols resolved from the blob which match IF_VER 1.1
     Ctor mCtor = nullptr;
     Dtor mDtor = nullptr;
-    F_setTarget mSetTarget = nullptr;
-    F_setHDR mSetHDR = nullptr;
-    F_setIntent mSetIntent = nullptr;
-    F_initCoef mInitCoef = nullptr;
-    F_setLayer mSetLayer = nullptr;
-    F_getCoefData mGetCoef = nullptr;
-    F_setLog mSetLog = nullptr;
-    F_needProc mNeedProc = nullptr;
-    F_setDebugMode mSetDbg = nullptr;
+    F_setTargetInfo mSetTargetInfo = nullptr;
+    F_setHDRlayer mSetHDRlayer = nullptr;
+    F_setRenderIntent mSetRenderIntent = nullptr;
+    F_initHdrCoefBuildup mInitHdrCoefBuildup = nullptr;
+    F_needHdrProcessing mNeedHdrProcessing = nullptr;
+    F_setLayerInfo mSetLayerInfo = nullptr;
+    F_getHdrCoefData mGetHdrCoefData = nullptr;
+    F_setLogLevel mSetLogLevel = nullptr;
+    F_setDebugMode mSetDebugMode = nullptr;
 
-    // And the members:
-    F_initHdrIf mInitIf = nullptr;
-    F_deinitHdrIf mDeinitIf = nullptr;
-    F_initBufFds mInitBuf = nullptr;
-    F_deinitBufFds mDeinitBuf = nullptr;
-    F_initCurIf mInitCur = nullptr;
-    F_isAvail mIsAvail = nullptr;
-    F_getAttr mGetAttr = nullptr;
-    F_getSize mGetSize = nullptr;
+    // New symbols (IF_VER 2.1)
+    F_initHdrInterfaces mInitHdrInterfaces = nullptr;
+    F_deinitHdrInterfaces mDeinitHdrInterfaces = nullptr;
+    F_initHdrBufFds mInitHdrBufFds = nullptr;
+    F_deinitHdrBufFds mDeinitHdrBufFds = nullptr;
+    F_initCurIf mInitCurIf = nullptr;
+    F_isHdrAvailable mIsHdrAvailable = nullptr;
+    F_getAttributes mGetAttributes = nullptr;
+    F_initHdrCoefSize mInitHdrCoefSize = nullptr;
 
     // plumbing
     bool openLib();

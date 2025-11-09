@@ -9,31 +9,32 @@
 #define LOG_NDEBUG 0
 
 namespace {
-/* libhdrwrapper path */
+// libhdrwrapper path
 constexpr const char* kLib = "/vendor/lib64/libhdrwrapper.so";
 
-/* Constructor and destructor */
+// Constructor and destructor  of libhdrwrapper.so
 constexpr const char* kCtorSym = "_ZN13libhdrwrapperC1Ev";
 constexpr const char* kDtorSym = "_ZN13libhdrwrapperD1Ev";
 
-/* Methods exposed by libhdrwrapper */
-constexpr const char* kSetTargetSym = "_ZN13libhdrwrapper13setTargetInfoEP13HdrTargetInfo";
-constexpr const char* kSetHDRSym = "_ZN13libhdrwrapper11setHDRlayerEb";
-constexpr const char* kSetIntentSym = "_ZN13libhdrwrapper15setRenderIntentEi";
-constexpr const char* kBuildupSym = "_ZN13libhdrwrapper18initHdrCoefBuildupEv";
-constexpr const char* kSetLayerSym = "_ZN13libhdrwrapper12setLayerInfoEiP12HdrLayerInfo";
-constexpr const char* kGetCoefSym = "_ZN13libhdrwrapper14getHdrCoefDataEiRi";
-constexpr const char* kSetLogSym = "_ZN13libhdrwrapper11setLogLevelEi";
-constexpr const char* kInitIfSym = "_ZN13libhdrwrapper17initHdrInterfacesEv";
-constexpr const char* kDeinitIfSym = "_ZN13libhdrwrapper19deinitHdrInterfacesEv";
-constexpr const char* kInitBufSym = "_ZN13libhdrwrapper13initHdrBufFdsEv";
-constexpr const char* kDeinitBufSym = "_ZN13libhdrwrapper15deinitHdrBufFdsEv";
-constexpr const char* kInitCurSym = "_ZN13libhdrwrapper8initCurIfEv";
-constexpr const char* kIsAvailSym = "_ZN13libhdrwrapper14isHdrAvailableEv";
-constexpr const char* kGetAttrSym = "_ZN13libhdrwrapper12getAttributesEv";
-constexpr const char* kGetSizeSym = "_ZN13libhdrwrapper15initHdrCoefSizeEv";
-constexpr const char* kNeedProcSym = "_ZN13libhdrwrapper18needHdrProcessingEP12HdrLayerInfo";
-constexpr const char* kSetDbgSym = "_ZN13libhdrwrapper12setDebugModeE9DebugMode";
+/* Methods exposed by libhdrwrapper.so */
+constexpr const char* kSetTargetInfoSym = "_ZN13libhdrwrapper13setTargetInfoEP13HdrTargetInfo";
+constexpr const char* kSetHDRlayerSym = "_ZN13libhdrwrapper11setHDRlayerEb";
+constexpr const char* kSetRenderIntentSym = "_ZN13libhdrwrapper15setRenderIntentEi";
+constexpr const char* kInitHdrCoefBuildupSym = "_ZN13libhdrwrapper18initHdrCoefBuildupEv";
+constexpr const char* kNeedHdrProcessingSym = "_ZN13libhdrwrapper17needHdrProcessingEP12HdrLayerInfo";
+constexpr const char* kSetLayerInfoSym = "_ZN13libhdrwrapper12setLayerInfoEiP12HdrLayerInfo";
+constexpr const char* kGetHdrCoefDataSym = "_ZN13libhdrwrapper14getHdrCoefDataEiRi";
+constexpr const char* kSetLogLevelSym = "_ZN13libhdrwrapper11setLogLevelEi";
+constexpr const char* kSetDebugModeSym = "_ZN13libhdrwrapper12setDebugModeE9DebugMode";
+
+constexpr const char* kInitHdrInterfacesSym = "_ZN13libhdrwrapper17initHdrInterfacesEv";
+constexpr const char* kDeinitHdrInterfacesSym = "_ZN13libhdrwrapper19deinitHdrInterfacesEv";
+constexpr const char* kInitHdrBufFdsSym = "_ZN13libhdrwrapper13initHdrBufFdsEv";
+constexpr const char* kDeinitHdrBufFdsSym = "_ZN13libhdrwrapper15deinitHdrBufFdsEv";
+constexpr const char* kInitCurIfSym = "_ZN13libhdrwrapper9initCurIfEv";
+constexpr const char* kIsHdrAvailableSym = "_ZN13libhdrwrapper14isHdrAvailableEv";
+constexpr const char* kGetAttributesSym = "_ZN13libhdrwrapper13getAttributesEv";
+constexpr const char* kInitHdrCoefSizeSym = "_ZN13libhdrwrapper15initHdrCoefSizeEv";
 
 constexpr size_t kObjSize = 1024;
 }  // namespace
@@ -72,24 +73,27 @@ bool HdrInterfaceWrapper::openLib() {
 bool HdrInterfaceWrapper::resolveSyms() {
     mCtor = reinterpret_cast<Ctor>(symReq(mLib, kCtorSym));
     mDtor = reinterpret_cast<Dtor>(symReq(mLib, kDtorSym));
-    mSetTarget = reinterpret_cast<F_setTarget>(symReq(mLib, kSetTargetSym));
-    mSetHDR = reinterpret_cast<F_setHDR>(symReq(mLib, kSetHDRSym));
-    mSetIntent = reinterpret_cast<F_setIntent>(symReq(mLib, kSetIntentSym));
-    mInitCoef = reinterpret_cast<F_initCoef>(symReq(mLib, kBuildupSym));
-    mSetLayer = reinterpret_cast<F_setLayer>(symReq(mLib, kSetLayerSym));
-    mGetCoef = reinterpret_cast<F_getCoefData>(symReq(mLib, kGetCoefSym));
-    mSetLog = reinterpret_cast<F_setLog>(symReq(mLib, kSetLogSym));
-    mInitIf = reinterpret_cast<F_initHdrIf>(symOpt(mLib, kInitIfSym));
-    mDeinitIf = reinterpret_cast<F_deinitHdrIf>(symOpt(mLib, kDeinitIfSym));
-    mInitBuf = reinterpret_cast<F_initBufFds>(symOpt(mLib, kInitBufSym));
-    mDeinitBuf = reinterpret_cast<F_deinitBufFds>(symOpt(mLib, kDeinitBufSym));
-    mInitCur = reinterpret_cast<F_initCurIf>(symOpt(mLib, kInitCurSym));
-    mIsAvail = reinterpret_cast<F_isAvail>(symOpt(mLib, kIsAvailSym));
-    mGetAttr = reinterpret_cast<F_getAttr>(symOpt(mLib, kGetAttrSym));
-    mGetSize = reinterpret_cast<F_getSize>(symOpt(mLib, kGetSizeSym));
+    mSetTargetInfo = reinterpret_cast<F_setTargetInfo>(symReq(mLib, kSetTargetInfoSym));
+    mSetHDRlayer = reinterpret_cast<F_setHDRlayer>(symReq(mLib, kSetHDRlayerSym));
+    mSetRenderIntent = reinterpret_cast<F_setRenderIntent>(symReq(mLib, kSetRenderIntentSym));
+    mInitHdrCoefBuildup = reinterpret_cast<F_initHdrCoefBuildup>(symReq(mLib, kInitHdrCoefBuildupSym));
+    mNeedHdrProcessing = reinterpret_cast<F_needHdrProcessing>(symReq(mLib, kNeedHdrProcessingSym));
+    mSetLayerInfo = reinterpret_cast<F_setLayerInfo>(symReq(mLib, kSetLayerInfoSym));
+    mGetHdrCoefData = reinterpret_cast<F_getHdrCoefData>(symReq(mLib, kNeedHdrProcessingSym));
+    mSetLogLevel = reinterpret_cast<F_setLogLevel>(symReq(mLib, kSetLogLevelSym));
+    mSetDebugMode = reinterpret_cast<F_setDebugMode>(symReq(mLib, kSetDebugModeSym));
 
-    return mCtor && mDtor && mSetTarget && mSetHDR && mSetIntent && mInitCoef && mSetLayer &&
-           mGetCoef && mSetLog;
+    mInitHdrInterfaces = reinterpret_cast<F_initHdrInterfaces>(symOpt(mLib, kInitHdrInterfacesSym));
+    mDeinitHdrInterfaces = reinterpret_cast<F_deinitHdrInterfaces>(symOpt(mLib, kDeinitHdrInterfacesSym));
+    mInitHdrBufFds = reinterpret_cast<F_initHdrBufFds>(symOpt(mLib, kInitHdrBufFdsSym));
+    mDeinitHdrBufFds = reinterpret_cast<F_deinitHdrBufFds>(symOpt(mLib, kDeinitHdrBufFdsSym));
+    mInitCurIf = reinterpret_cast<F_initCurIf>(symOpt(mLib, kInitCurIfSym));
+    mIsHdrAvailable = reinterpret_cast<F_isHdrAvailable>(symOpt(mLib, kIsHdrAvailableSym));
+    mGetAttributes = reinterpret_cast<F_getAttributes>(symOpt(mLib, kGetAttributesSym));
+    mInitHdrCoefSize = reinterpret_cast<F_initHdrCoefSize>(symOpt(mLib, kInitHdrCoefSizeSym));
+
+    return mCtor && mDtor && mSetTargetInfo && mSetHDRlayer && mSetRenderIntent &&
+           mInitHdrCoefBuildup && mSetLayerInfo && mGetHdrCoefData && mSetLogLevel && mSetDebugMode;
 }
 
 bool HdrInterfaceWrapper::constructObj() {
@@ -122,6 +126,7 @@ void HdrInterfaceWrapper::destroyObj() {
 }
 
 hdrInterface* HdrInterfaceWrapper::Create() {
+    ALOGI("Creating libhdr_wrapper instance");
     auto* w = new HdrInterfaceWrapper();
     if (!w->openLib() || !w->resolveSyms() || !w->constructObj()) {
         delete w;
@@ -135,81 +140,49 @@ void HdrInterfaceWrapper::Destroy(hdrInterface* inst) {
 }
 
 HdrInterfaceWrapper::~HdrInterfaceWrapper() {
+    ALOGI("Destroying libhdr_wrapper instance");
     destroyObj();
 }
 
-int HdrInterfaceWrapper::getHdrCoefSize(enum HdrHwId hw_id) {
-    if (hw_id < 0 || hw_id >= HDR_HW_MAX) {
-        return -HDR_ERR_INVAL;
-    }
-
-    if (mCoefSize[hw_id] > 0) {
-        return mCoefSize[hw_id];
-    }
-
-    // Prefer the explicit size getter if available
-    if (mGetSize) {
-        int sz = mGetSize(mObj);
-        if (sz > 0) {
-            mCoefSize[hw_id] = sz;
-        }
-
-        if (sz > 0) {
-            return sz;
-        } else {
-            return -HDR_ERR_INVAL;
-        }
-    }
-
-    // Fallback: sometimes vendors piggyback size into getHdrCoefData’s “out”
-    if (mGetCoef) {
-        int out = -1;
-        int ret = mGetCoef(mObj, static_cast<int>(hw_id), out);
-
-        if (ret == 0 && out > 0) {
-            mCoefSize[hw_id] = out;
-            return out;
-        }
-    }
-
-    return -HDR_ERR_PTR;
-}
-
 int HdrInterfaceWrapper::setTargetInfo(struct HdrTargetInfo* tInfo) {
-    if (mSetTarget) {
-        return mSetTarget(mObj, tInfo);
+    if (mSetTargetInfo) {
+        return mSetTargetInfo(mObj, tInfo);
     } else {
         return -HDR_ERR_PTR;
     }
 }
 
 void HdrInterfaceWrapper::setHDRlayer(bool hasHdr) {
-    if (mSetHDR) {
-        mSetHDR(mObj, hasHdr);
+    if (mSetHDRlayer) {
+        mSetHDRlayer(mObj, hasHdr);
     }
 }
 
 void HdrInterfaceWrapper::setRenderIntent(int rendIntent) {
-    if (mSetIntent) {
-        mSetIntent(mObj, rendIntent);
+    if (mSetRenderIntent) {
+        mSetRenderIntent(mObj, rendIntent);
     }
 }
 
 int HdrInterfaceWrapper::initHdrCoefBuildup(enum HdrHwId) {
-    return mInitCoef ? mInitCoef(mObj) : -HDR_ERR_PTR;
+    if (mInitHdrCoefBuildup) {
+        return mInitHdrCoefBuildup(mObj);
+    } else {
+        return -HDR_ERR_PTR;
+    }
 }
 
 bool HdrInterfaceWrapper::needHdrProcessing(struct HdrLayerInfo* lInfo) {
-    if (mNeedProc) {
-        return mNeedProc(mObj, lInfo);
+    if (mNeedHdrProcessing) {
+        return mNeedHdrProcessing(mObj, lInfo);
     } else {
         return false;
     }
 }
 
 int HdrInterfaceWrapper::setLayerInfo(int layer_index, struct HdrLayerInfo* lInfo) {
-    if (mSetLayer) {
-        return mSetLayer(mObj, layer_index, lInfo);
+    if (mSetLayerInfo) {
+        return mSetLayerInfo(mObj, layer_index, lInfo);
     } else {
         return -HDR_ERR_PTR;
     }
@@ -221,7 +194,7 @@ int HdrInterfaceWrapper::getHdrCoefData(enum HdrHwId hw_id, int __attribute__((u
         return -HDR_ERR_PTR;
     }
 
-    if (!mGetCoef) {
+    if (!mGetHdrCoefData) {
         return -HDR_ERR_PTR;
     }
 
@@ -232,7 +205,7 @@ int HdrInterfaceWrapper::getHdrCoefData(enum HdrHwId hw_id, int __attribute__((u
     if (len <= 0) return -HDR_ERR_INVAL;
 
     int out = -1;
-    int ret = mGetCoef(mObj, static_cast<int>(hw_id), out);
+    int ret = mGetHdrCoefData(mObj, static_cast<int>(hw_id), out);
 
     if (ret != 0) return ret;
 
@@ -262,13 +235,50 @@ int HdrInterfaceWrapper::getHdrCoefData(enum HdrHwId hw_id, struct hdrCoefParcel
 }
 
 void HdrInterfaceWrapper::setLogLevel(int log_level) {
-    if (mSetLog) {
-        mSetLog(mObj, log_level);
+    if (mSetLogLevel) {
+        mSetLogLevel(mObj, log_level);
     }
 }
 
 void HdrInterfaceWrapper::setDebugMode(enum DebugMode debug_mode) {
-    if (mSetDbg) {
-        mSetDbg(mObj, BYPASS_OFF);
+    if (mSetDebugMode) {
+        mSetDebugMode(mObj, debug_mode);
     }
+}
+
+int HdrInterfaceWrapper::getHdrCoefSize(enum HdrHwId hw_id) {
+    if (hw_id < 0 || hw_id >= HDR_HW_MAX) {
+        return -HDR_ERR_INVAL;
+    }
+
+    if (mCoefSize[hw_id] > 0) {
+        return mCoefSize[hw_id];
+    }
+
+    // Prefer the explicit size getter if available
+    if (mInitHdrCoefSize) {
+        int sz = mInitHdrCoefSize(mObj);
+        if (sz > 0) {
+            mCoefSize[hw_id] = sz;
+        }
+
+        if (sz > 0) {
+            return sz;
+        } else {
+            return -HDR_ERR_INVAL;
+        }
+    }
+
+    // Fallback: sometimes vendors piggyback size into getHdrCoefData’s “out”
+    if (mGetHdrCoefData) {
+        int out = -1;
+        int ret = mGetHdrCoefData(mObj, static_cast<int>(hw_id), out);
+
+        if (ret == 0 && out > 0) {
+            mCoefSize[hw_id] = out;
+            return out;
+        }
+    }
+
+    return -HDR_ERR_PTR;
 }
