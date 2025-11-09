@@ -6,12 +6,6 @@ install_symlink {
 }
 
 prebuilt_etc {
-    name: "hdr_samsung_mx.key",
-    vendor: true,
-    src: ":empty_file",
-}
-
-prebuilt_etc {
     name: "null",
     relative_install_path: "root/dev",
     recovery: true,

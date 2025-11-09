@@ -247,6 +247,7 @@ vendor/lib64/vendor.samsung.hardware.keymint-V3-ndk.so
 # Misc
 vendor/lib64/libfloatingfeature.so
 vendor/lib64/libsecnativefeature.so
+vendor/etc/hdr_samsung_mx.key
 
 # Neural Networks
 vendor/bin/hw/android.hardware.neuralnetworks-service-enn

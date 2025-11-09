@@ -5,6 +5,7 @@
 #include <utils/Log.h>
 #include <cstdlib>
 #include <cstring>
+#include <sys/stat.h>
 
 #define LOG_NDEBUG 0
 
@@ -40,6 +41,7 @@ constexpr size_t kObjSize = 1024;
 }  // namespace
 
 void* HdrInterfaceWrapper::symReq(void* h, const char* n) {
+    ALOGI("calling %s", __func__);
     dlerror();
     ALOGD("dlsym required symbol %s", n);
     void* p = dlsym(h, n);
@@ -50,6 +52,7 @@ void* HdrInterfaceWrapper::symReq(void* h, const char* n) {
     return p;
 }
 void* HdrInterfaceWrapper::symOpt(void* h, const char* n) {
+    ALOGI("calling %s", __func__);
     dlerror();
     ALOGD("dlsym optional symbol %s", n);
     void* p = dlsym(h, n);
@@ -61,6 +64,7 @@ void* HdrInterfaceWrapper::symOpt(void* h, const char* n) {
 }
 
 bool HdrInterfaceWrapper::openLib() {
+    ALOGI("calling %s", __func__);
     mLib = dlopen(kLib, RTLD_NOW | RTLD_LOCAL);
     if (!mLib) {
         ALOGE("dlopen %s failed: %s", kLib, dlerror());
@@ -71,6 +75,7 @@ bool HdrInterfaceWrapper::openLib() {
 }
 
 bool HdrInterfaceWrapper::resolveSyms() {
+    ALOGI("calling %s", __func__);
     mCtor = reinterpret_cast<Ctor>(symReq(mLib, kCtorSym));
     mDtor = reinterpret_cast<Dtor>(symReq(mLib, kDtorSym));
     mSetTargetInfo = reinterpret_cast<F_setTargetInfo>(symReq(mLib, kSetTargetInfoSym));
@@ -97,6 +102,7 @@ bool HdrInterfaceWrapper::resolveSyms() {
 }
 
 bool HdrInterfaceWrapper::constructObj() {
+    ALOGI("calling %s", __func__);
     mObj = std::aligned_alloc(alignof(std::max_align_t), kObjSize);
 
     if (!mObj) {
@@ -110,6 +116,7 @@ bool HdrInterfaceWrapper::constructObj() {
 }
 
 void HdrInterfaceWrapper::destroyObj() {
+    ALOGI("calling %s", __func__);
     if (mObj && mDtor) {
         mDtor(mObj);
     }
@@ -126,6 +133,7 @@ void HdrInterfaceWrapper::destroyObj() {
 }
 
 hdrInterface* HdrInterfaceWrapper::Create() {
+    ALOGI("calling %s", __func__);
     ALOGI("Creating libhdr_wrapper instance");
 
     auto* w = new HdrInterfaceWrapper();
@@ -136,6 +144,10 @@ hdrInterface* HdrInterfaceWrapper::Create() {
         return nullptr;
     }
 
+    if (w->mInitHdrInterfaces) {
+         w->mInitHdrInterfaces(w->mObj);
+    }
+
     if (w->mInitHdrCoefSize) {
       w->mInitHdrCoefSize(w->mObj);
     }
@@ -144,23 +156,22 @@ hdrInterface* HdrInterfaceWrapper::Create() {
         w->mInitHdrBufFds(w->mObj);
     }
 
-    if (w->mInitCurIf) {
-        w->mInitCurIf(w->mObj);
-    }
-
     return w;
 }
 
 void HdrInterfaceWrapper::Destroy(hdrInterface* inst) {
+    ALOGI("calling %s", __func__);
     delete static_cast<HdrInterfaceWrapper*>(inst);
 }
 
 HdrInterfaceWrapper::~HdrInterfaceWrapper() {
+    ALOGI("calling %s", __func__);
     ALOGI("Destroying libhdr_wrapper instance");
     destroyObj();
 }
 
 int HdrInterfaceWrapper::getHdrCoefSize(enum HdrHwId hw_id) {
+    ALOGI("calling %s", __func__);
     if (hw_id < 0 || hw_id >= HDR_HW_MAX) {
         return 0;
     } else {
@@ -169,34 +180,39 @@ int HdrInterfaceWrapper::getHdrCoefSize(enum HdrHwId hw_id) {
 }
 
 int HdrInterfaceWrapper::setTargetInfo(struct HdrTargetInfo* tInfo) {
+    ALOGI("calling %s", __func__);
     if (mSetTargetInfo) {
         return mSetTargetInfo(mObj, tInfo);
     } else {
-        return -HDR_ERR_PTR;
+        return HDR_ERR_PTR;
     }
 }
 
 void HdrInterfaceWrapper::setHDRlayer(bool hasHdr) {
+    ALOGI("calling %s", __func__);
     if (mSetHDRlayer) {
         mSetHDRlayer(mObj, hasHdr);
     }
 }
 
 void HdrInterfaceWrapper::setRenderIntent(int rendIntent) {
+    ALOGI("calling %s", __func__);
     if (mSetRenderIntent) {
         mSetRenderIntent(mObj, rendIntent);
     }
 }
 
 int HdrInterfaceWrapper::initHdrCoefBuildup(enum HdrHwId) {
+    ALOGI("calling %s", __func__);
     if (mInitHdrCoefBuildup) {
         return mInitHdrCoefBuildup(mObj);
     } else {
-        return -HDR_ERR_PTR;
+        return HDR_ERR_PTR;
     }
 }
 
 bool HdrInterfaceWrapper::needHdrProcessing(struct HdrLayerInfo* lInfo) {
+    ALOGI("calling %s", __func__);
     if (mNeedHdrProcessing) {
         return mNeedHdrProcessing(mObj, lInfo);
     } else {
@@ -205,66 +221,77 @@ bool HdrInterfaceWrapper::needHdrProcessing(struct HdrLayerInfo* lInfo) {
 }
 
 int HdrInterfaceWrapper::setLayerInfo(int layer_index, struct HdrLayerInfo* lInfo) {
-    if (mSetLayerInfo) {
+    ALOGI("calling %s", __func__);
+    int ret;
+    ret = mSetLayerInfo(mObj, layer_index, lInfo);
+    ALOGI("%s ret is %d", __func__, ret);
+    if (ret) {
         return mSetLayerInfo(mObj, layer_index, lInfo);
     } else {
-        return -HDR_ERR_PTR;
+        return HDR_ERR_PTR;
     }
 }
 
-int HdrInterfaceWrapper::getHdrCoefData(enum HdrHwId hw_id, int __attribute__((unused)) layer_index,
-                                        struct hdrCoefParcel* parcel) {
-    if (!parcel || !parcel->hdrCoef) {
-        return -HDR_ERR_PTR;
-    }
+int HdrInterfaceWrapper::getHdrCoefData(HdrHwId hw_id, int layer_index, hdrCoefParcel* parcel) {
+    ALOGI("calling %s 3 args", __func__);
+    if (!parcel || !parcel->hdrCoef) return -HDR_ERR_PTR;
+    if (!mGetHdrCoefData)            return -HDR_ERR_PTR;
+    if (layer_index < 0)             return -HDR_ERR_INVAL;
 
-    if (!mGetHdrCoefData) {
-        return -HDR_ERR_PTR;
-    }
-
-    if (hw_id < 0 || hw_id >= HDR_HW_MAX) return -HDR_ERR_INVAL;
-
-    const int len = getHdrCoefSize(hw_id);
-
-    if (len <= 0) return -HDR_ERR_INVAL;
+    const size_t len = sizeof(struct hdrCoef);
 
     int out = -1;
-    int ret = mGetHdrCoefData(mObj, static_cast<int>(hw_id), out);
-
-    if (ret != 0) return ret;
+    const int ret = mGetHdrCoefData(mObj, layer_index, &out);
+    if (ret != 0 || out == -1) return (ret != 0) ? ret : -HDR_ERR_INVAL;
 
     // FD case?
     if (out >= 0 && fcntl(out, F_GETFD) != -1) {
-        void* src = mmap(nullptr, len, PROT_READ, MAP_PRIVATE, out, 0);
+        // Borrowed FD → dup it, operate on the dup, then close the dup.
+        int fd = dup(out);
+        if (fd < 0) return -HDR_ERR_INVAL;
 
+        struct stat st{};
+        if (fstat(fd, &st) != 0 || st.st_size <= 0) {
+            close(fd);
+            return -HDR_ERR_INVAL;
+        }
+
+        const size_t to_copy = std::min<size_t>(len, st.st_size);
+        void* src = mmap(nullptr, to_copy, PROT_READ, MAP_PRIVATE, fd, 0);
         if (src == MAP_FAILED) {
-            close(out);
+            close(fd);
             return -HDR_ERR_NOPERM;
         }
 
-        memcpy(parcel->hdrCoef, src, len);
-        munmap(src, len);
-        close(out);
+        memcpy(parcel->hdrCoef, src, to_copy);
+        munmap(src, to_copy);
+        close(fd);           // close only the dup, NOT `out`
+        if (to_copy < len) { // optional: pad tail
+            memset((uint8_t*)parcel->hdrCoef + to_copy, 0, len - to_copy);
+        }
         return 0;
     }
 
-    // Pointer case (address in our process)
-    void* src = reinterpret_cast<void*>(static_cast<intptr_t>(out));
-    memcpy(parcel->hdrCoef, src, len);
+    // Pointer case
+    if (out == 0) return -HDR_ERR_INVAL;
+    memcpy(parcel->hdrCoef, reinterpret_cast<void*>(static_cast<intptr_t>(out)), len);
     return 0;
 }
 
-int HdrInterfaceWrapper::getHdrCoefData(enum HdrHwId hw_id, struct hdrCoefParcel* parcel) {
-    return getHdrCoefData(hw_id, 0, parcel);
+int HdrInterfaceWrapper::getHdrCoefData(HdrHwId hw_id, hdrCoefParcel* parcel) {
+    ALOGI("calling %s 2 aregfs", __func__);
+    return getHdrCoefData(hw_id, /*layer_index=*/0, parcel);
 }
 
 void HdrInterfaceWrapper::setLogLevel(int log_level) {
+    ALOGI("calling %s", __func__);
     if (mSetLogLevel) {
         mSetLogLevel(mObj, log_level);
     }
 }
 
 void HdrInterfaceWrapper::setDebugMode(enum DebugMode debug_mode) {
+    ALOGI("calling %s", __func__);
     if (mSetDebugMode) {
         mSetDebugMode(mObj, debug_mode);
     }

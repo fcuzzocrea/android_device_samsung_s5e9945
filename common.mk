@@ -114,9 +114,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     vendor/samsung/s5e9945/proprietary/recovery/root/lib/firmware/sgpu/vangogh_lite_unified_evt1.bin:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/lib/firmware/sgpu/vangogh_lite_unified_evt1.bin
 
-PRODUCT_PACKAGES += \
-    hdr_samsung_mx.key
-
 # GNSS
 PRODUCT_PACKAGES += \
     init.gps.rc \

@@ -54,18 +54,18 @@ class HdrInterfaceWrapper : public hdrInterface {
     using F_initHdrCoefBuildup = int (*)(void* self);
     using F_needHdrProcessing = bool (*)(void* self, HdrLayerInfo*);
     using F_setLayerInfo = int (*)(void* self, int, HdrLayerInfo*);
-    using F_getHdrCoefData = int (*)(void* self, int /*hw*/, int& /*out*/);
+    using F_getHdrCoefData = int (*)(void* self, int hw_id, int* out);
     using F_setLogLevel = void (*)(void* self, int);
     using F_setDebugMode = void (*)(void* self, DebugMode);
 
     // Add function pointer types for the extra symbols
-    using F_initHdrInterfaces = int (*)(void*);
+    using F_initHdrInterfaces = void (*)(void*);
     using F_deinitHdrInterfaces = void (*)(void*);
-    using F_initHdrBufFds = int (*)(void*);
+    using F_initHdrBufFds = void (*)(void*);
     using F_deinitHdrBufFds = void (*)(void*);
-    using F_initCurIf = int (*)(void*);
-    using F_isHdrAvailable = bool (*)(void*);
-    using F_getAttributes = int (*)(void*);
+    using F_initCurIf = void (*)(void*);
+    using F_isHdrAvailable = bool (*)(void*); /* puzza */
+    using F_getAttributes = unsigned int (*)(void*);
     using F_initHdrCoefSize = void (*)(void*);
 
     // Symbols resolved from the blob which match IF_VER 1.1
