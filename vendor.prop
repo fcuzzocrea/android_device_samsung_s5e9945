@@ -60,6 +60,9 @@ debug.sf.enable_adpf_cpu_hint=true
 ro.vendor.fingerprint.force_calibrate=1
 ro.vendor.fingerprint.type=udfps
 
+# FRP
+ro.frp.pst=/dev/block/persistent
+
 # Graphics
 debug.sf.auto_latch_unsignaled=0
 debug.sf.disable_client_composition_cache=1
@@ -106,17 +109,22 @@ vendor.powerhal.disp.idle_support=false
 ro.egl.blobcache.multifile=true
 ro.egl.blobcache.multifile_limit=268435456
 
-# Zygote
-zygote.critical_window.minute=10
 
 # RIL
 ro.vendor.sec.radio.def_network=9
 ro.vendor.radio.default_network=26
+
+# Weaver
+security.securehw.available=false
+security.securenvm.available=false
+
+# WiFi
+wifi.aware.interface=wifi-aware0
 
 # ZRAM
 ro.zram.mark_idle_delay_mins=60
 ro.zram.first_wb_delay_mins=180
 ro.zram.periodic_wb_delay_hours=24
 
-# WiFi
-wifi.aware.interface=wifi-aware0
+# Zygote
+zygote.critical_window.minute=10
