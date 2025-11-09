@@ -13,10 +13,7 @@ class HdrInterfaceWrapper : public hdrInterface {
     ~HdrInterfaceWrapper() override;
 
     // init phase
-    int sethdr10pMetaInterface(class hdr10pMetaInterface __attribute__((unused)) *
-                               hdr10pMetaIf) override {
-        return 0;
-    }
+    int sethdr10pMetaInterface(class hdr10pMetaInterface __attribute__((unused)) * hdr10pMetaIf) override { return 0;}
     int getHdrCoefSize(enum HdrHwId hw_id) override;
 
     // per frame setting phase (set when there is any change)
@@ -47,18 +44,7 @@ class HdrInterfaceWrapper : public hdrInterface {
     // dlopen handle and opaque object buffer constructed via vendor ctor --
     void* mLib = nullptr;
     void* mObj = nullptr;
-
-    // inside class HdrInterfaceWrapper private:
-    struct Map {
-        void* addr{};
-        size_t len{};
-        int fd{-1};
-    };
   
-    std::vector<Map> mMaps;
-
-    int mCoefSize[HDR_HW_MAX] = {0};  // cache per-HW size
-
     // Function pointer types
     using Ctor = void (*)(void* self);
     using Dtor = void (*)(void* self);
@@ -80,7 +66,7 @@ class HdrInterfaceWrapper : public hdrInterface {
     using F_initCurIf = int (*)(void*);
     using F_isHdrAvailable = bool (*)(void*);
     using F_getAttributes = int (*)(void*);
-    using F_initHdrCoefSize = int (*)(void*);  // initHdrCoefSize()
+    using F_initHdrCoefSize = void (*)(void*);
 
     // Symbols resolved from the blob which match IF_VER 1.1
     Ctor mCtor = nullptr;

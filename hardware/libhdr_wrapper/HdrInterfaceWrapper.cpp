@@ -79,7 +79,7 @@ bool HdrInterfaceWrapper::resolveSyms() {
     mInitHdrCoefBuildup = reinterpret_cast<F_initHdrCoefBuildup>(symReq(mLib, kInitHdrCoefBuildupSym));
     mNeedHdrProcessing = reinterpret_cast<F_needHdrProcessing>(symReq(mLib, kNeedHdrProcessingSym));
     mSetLayerInfo = reinterpret_cast<F_setLayerInfo>(symReq(mLib, kSetLayerInfoSym));
-    mGetHdrCoefData = reinterpret_cast<F_getHdrCoefData>(symReq(mLib, kNeedHdrProcessingSym));
+    mGetHdrCoefData = reinterpret_cast<F_getHdrCoefData>(symReq(mLib, kGetHdrCoefDataSym));
     mSetLogLevel = reinterpret_cast<F_setLogLevel>(symReq(mLib, kSetLogLevelSym));
     mSetDebugMode = reinterpret_cast<F_setDebugMode>(symReq(mLib, kSetDebugModeSym));
 
@@ -127,11 +127,27 @@ void HdrInterfaceWrapper::destroyObj() {
 
 hdrInterface* HdrInterfaceWrapper::Create() {
     ALOGI("Creating libhdr_wrapper instance");
+
     auto* w = new HdrInterfaceWrapper();
+
     if (!w->openLib() || !w->resolveSyms() || !w->constructObj()) {
+        ALOGE("Unable to create libhdr_wrapper instance");
         delete w;
         return nullptr;
     }
+
+    if (w->mInitHdrCoefSize) {
+      w->mInitHdrCoefSize(w->mObj);
+    }
+
+    if (w->mInitHdrBufFds){
+        w->mInitHdrBufFds(w->mObj);
+    }
+
+    if (w->mInitCurIf) {
+        w->mInitCurIf(w->mObj);
+    }
+
     return w;
 }
 
@@ -142,6 +158,14 @@ void HdrInterfaceWrapper::Destroy(hdrInterface* inst) {
 HdrInterfaceWrapper::~HdrInterfaceWrapper() {
     ALOGI("Destroying libhdr_wrapper instance");
     destroyObj();
+}
+
+int HdrInterfaceWrapper::getHdrCoefSize(enum HdrHwId hw_id) {
+    if (hw_id < 0 || hw_id >= HDR_HW_MAX) {
+        return 0;
+    } else {
+        return static_cast<int>(sizeof(struct hdrCoef));
+    }
 }
 
 int HdrInterfaceWrapper::setTargetInfo(struct HdrTargetInfo* tInfo) {
@@ -244,41 +268,4 @@ void HdrInterfaceWrapper::setDebugMode(enum DebugMode debug_mode) {
     if (mSetDebugMode) {
         mSetDebugMode(mObj, debug_mode);
     }
-}
-
-int HdrInterfaceWrapper::getHdrCoefSize(enum HdrHwId hw_id) {
-    if (hw_id < 0 || hw_id >= HDR_HW_MAX) {
-        return -HDR_ERR_INVAL;
-    }
-
-    if (mCoefSize[hw_id] > 0) {
-        return mCoefSize[hw_id];
-    }
-
-    // Prefer the explicit size getter if available
-    if (mInitHdrCoefSize) {
-        int sz = mInitHdrCoefSize(mObj);
-        if (sz > 0) {
-            mCoefSize[hw_id] = sz;
-        }
-
-        if (sz > 0) {
-            return sz;
-        } else {
-            return -HDR_ERR_INVAL;
-        }
-    }
-
-    // Fallback: sometimes vendors piggyback size into getHdrCoefData’s “out”
-    if (mGetHdrCoefData) {
-        int out = -1;
-        int ret = mGetHdrCoefData(mObj, static_cast<int>(hw_id), out);
-
-        if (ret == 0 && out > 0) {
-            mCoefSize[hw_id] = out;
-            return out;
-        }
-    }
-
-    return -HDR_ERR_PTR;
 }
