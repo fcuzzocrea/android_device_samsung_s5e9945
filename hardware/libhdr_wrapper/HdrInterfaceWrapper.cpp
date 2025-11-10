@@ -7,13 +7,11 @@
 #include <cstdlib>
 #include <cstring>
 
-#define LOG_NDEBUG 0
-
 namespace {
 // libhdrwrapper path
 constexpr const char* kLib = "/vendor/lib64/libhdrwrapper.so";
 
-// Constructor and destructor  of libhdrwrapper.so
+// Constructor and destructor of libhdrwrapper.so
 constexpr const char* kCtorSym = "_ZN13libhdrwrapperC1Ev";
 constexpr const char* kDtorSym = "_ZN13libhdrwrapperD1Ev";
 
@@ -232,19 +230,17 @@ int HdrInterfaceWrapper::getHdrCoefData(HdrHwId hw_id, int layer_index, hdrCoefP
         return HDR_ERR_INVAL;
     }
 
-    // Important: zero the destination so we can detect incomplete writes in logs
-    memset(parcel->hdrCoef, 0xDA, sizeof(hdrCoef));  // optional but useful for debugging
+    // Zero the destination
+    memset(parcel->hdrCoef, 0x00, sizeof(hdrCoef));
 
     // The blob will write directly into parcel->hdrCoef.
-    // 'out' (fd) is merely a side channel — ignore it for now.
-    int fd_or_status = -1;
-    int ret = mGetHdrCoefData(mObj, layer_index, &fd_or_status);
+    int out = -1;
+    int ret = mGetHdrCoefData(mObj, layer_index, &out);
     if (ret != HDR_ERR_NO) {
         return ret;
     }
 
-    // Don't close() or mmap() 'fd_or_status' here; it's not yours to manage for this flow.
-    // Just return success; the data should already be in parcel->hdrCoef.
+    // If we arrive here, we just return success; the data should already be in parcel->hdrCoef.
     return HDR_ERR_NO;
 }
 
