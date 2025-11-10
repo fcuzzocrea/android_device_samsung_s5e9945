@@ -40,8 +40,9 @@ constexpr const char* kInitHdrCoefSizeSym = "_ZN13libhdrwrapper15initHdrCoefSize
 constexpr size_t kObjSize = 1024;
 }  // namespace
 
+static void printhdrCoef(int layer_index, unsigned int ids, const struct hdrCoef *output);
+
 void* HdrInterfaceWrapper::symReq(void* h, const char* n) {
-    ALOGI("calling %s", __func__);
     dlerror();
     ALOGD("dlsym required symbol %s", n);
     void* p = dlsym(h, n);
@@ -52,7 +53,6 @@ void* HdrInterfaceWrapper::symReq(void* h, const char* n) {
     return p;
 }
 void* HdrInterfaceWrapper::symOpt(void* h, const char* n) {
-    ALOGI("calling %s", __func__);
     dlerror();
     ALOGD("dlsym optional symbol %s", n);
     void* p = dlsym(h, n);
@@ -64,7 +64,6 @@ void* HdrInterfaceWrapper::symOpt(void* h, const char* n) {
 }
 
 bool HdrInterfaceWrapper::openLib() {
-    ALOGI("calling %s", __func__);
     mLib = dlopen(kLib, RTLD_NOW | RTLD_LOCAL);
     if (!mLib) {
         ALOGE("dlopen %s failed: %s", kLib, dlerror());
@@ -75,7 +74,6 @@ bool HdrInterfaceWrapper::openLib() {
 }
 
 bool HdrInterfaceWrapper::resolveSyms() {
-    ALOGI("calling %s", __func__);
     mCtor = reinterpret_cast<Ctor>(symReq(mLib, kCtorSym));
     mDtor = reinterpret_cast<Dtor>(symReq(mLib, kDtorSym));
     mSetTargetInfo = reinterpret_cast<F_setTargetInfo>(symReq(mLib, kSetTargetInfoSym));
@@ -102,7 +100,6 @@ bool HdrInterfaceWrapper::resolveSyms() {
 }
 
 bool HdrInterfaceWrapper::constructObj() {
-    ALOGI("calling %s", __func__);
     mObj = std::aligned_alloc(alignof(std::max_align_t), kObjSize);
 
     if (!mObj) {
@@ -116,7 +113,6 @@ bool HdrInterfaceWrapper::constructObj() {
 }
 
 void HdrInterfaceWrapper::destroyObj() {
-    ALOGI("calling %s", __func__);
     if (mObj && mDtor) {
         mDtor(mObj);
     }
@@ -133,7 +129,6 @@ void HdrInterfaceWrapper::destroyObj() {
 }
 
 hdrInterface* HdrInterfaceWrapper::Create() {
-    ALOGI("calling %s", __func__);
     ALOGI("Creating libhdr_wrapper instance");
 
     auto* w = new HdrInterfaceWrapper();
@@ -145,14 +140,17 @@ hdrInterface* HdrInterfaceWrapper::Create() {
     }
 
     if (w->mInitHdrInterfaces) {
+         ALOGE("Initializing HDR interfaces");
          w->mInitHdrInterfaces(w->mObj);
     }
 
     if (w->mInitHdrCoefSize) {
-      w->mInitHdrCoefSize(w->mObj);
+        ALOGE("Initializing HDR coefficient sizes");
+        w->mInitHdrCoefSize(w->mObj);
     }
 
     if (w->mInitHdrBufFds){
+        ALOGE("Initializing HDR buffer fd");
         w->mInitHdrBufFds(w->mObj);
     }
 
@@ -160,59 +158,52 @@ hdrInterface* HdrInterfaceWrapper::Create() {
 }
 
 void HdrInterfaceWrapper::Destroy(hdrInterface* inst) {
-    ALOGI("calling %s", __func__);
     delete static_cast<HdrInterfaceWrapper*>(inst);
 }
 
 HdrInterfaceWrapper::~HdrInterfaceWrapper() {
-    ALOGI("calling %s", __func__);
     ALOGI("Destroying libhdr_wrapper instance");
     destroyObj();
 }
 
 int HdrInterfaceWrapper::getHdrCoefSize(enum HdrHwId hw_id) {
-    ALOGI("calling %s", __func__);
     if (hw_id < 0 || hw_id >= HDR_HW_MAX) {
-        return 0;
+        ALOGE("%s:selected hw id (%d) out of range", __func__, hw_id);
+        return HDR_ERR_INVAL;
     } else {
         return static_cast<int>(sizeof(struct hdrCoef));
     }
 }
 
 int HdrInterfaceWrapper::setTargetInfo(struct HdrTargetInfo* tInfo) {
-    ALOGI("calling %s", __func__);
     if (mSetTargetInfo) {
         return mSetTargetInfo(mObj, tInfo);
     } else {
-        return HDR_ERR_PTR;
+        return HDR_ERR_INVAL;
     }
 }
 
 void HdrInterfaceWrapper::setHDRlayer(bool hasHdr) {
-    ALOGI("calling %s", __func__);
     if (mSetHDRlayer) {
         mSetHDRlayer(mObj, hasHdr);
     }
 }
 
 void HdrInterfaceWrapper::setRenderIntent(int rendIntent) {
-    ALOGI("calling %s", __func__);
     if (mSetRenderIntent) {
         mSetRenderIntent(mObj, rendIntent);
     }
 }
 
 int HdrInterfaceWrapper::initHdrCoefBuildup(enum HdrHwId) {
-    ALOGI("calling %s", __func__);
     if (mInitHdrCoefBuildup) {
         return mInitHdrCoefBuildup(mObj);
     } else {
-        return HDR_ERR_PTR;
+        return HDR_ERR_INVAL;
     }
 }
 
 bool HdrInterfaceWrapper::needHdrProcessing(struct HdrLayerInfo* lInfo) {
-    ALOGI("calling %s", __func__);
     if (mNeedHdrProcessing) {
         return mNeedHdrProcessing(mObj, lInfo);
     } else {
@@ -221,19 +212,16 @@ bool HdrInterfaceWrapper::needHdrProcessing(struct HdrLayerInfo* lInfo) {
 }
 
 int HdrInterfaceWrapper::setLayerInfo(int layer_index, struct HdrLayerInfo* lInfo) {
-    ALOGI("calling %s", __func__);
     int ret;
     ret = mSetLayerInfo(mObj, layer_index, lInfo);
-    ALOGI("%s ret is %d", __func__, ret);
     if (ret) {
         return mSetLayerInfo(mObj, layer_index, lInfo);
     } else {
-        return HDR_ERR_PTR;
+        return HDR_ERR_INVAL;
     }
 }
-
+#if 0
 int HdrInterfaceWrapper::getHdrCoefData(HdrHwId hw_id, int layer_index, hdrCoefParcel* parcel) {
-    ALOGI("calling %s 3 args", __func__);
     if (!parcel || !parcel->hdrCoef) return -HDR_ERR_PTR;
     if (!mGetHdrCoefData)            return -HDR_ERR_PTR;
     if (layer_index < 0)             return -HDR_ERR_INVAL;
@@ -242,9 +230,9 @@ int HdrInterfaceWrapper::getHdrCoefData(HdrHwId hw_id, int layer_index, hdrCoefP
 
     int out = -1;
     const int ret = mGetHdrCoefData(mObj, layer_index, &out);
+    ALOGI("%s len %zu, ret %d, layer_index %d, out %d", __func__, len, ret, layer_index, out);
     if (ret != 0 || out == -1) return (ret != 0) ? ret : -HDR_ERR_INVAL;
 
-    // FD case?
     if (out >= 0 && fcntl(out, F_GETFD) != -1) {
         // Borrowed FD → dup it, operate on the dup, then close the dup.
         int fd = dup(out);
@@ -264,35 +252,98 @@ int HdrInterfaceWrapper::getHdrCoefData(HdrHwId hw_id, int layer_index, hdrCoefP
         }
 
         memcpy(parcel->hdrCoef, src, to_copy);
+        printhdrCoef(layer_index, hw_id, (const struct hdrCoef*)parcel->hdrCoef);
         munmap(src, to_copy);
         close(fd);           // close only the dup, NOT `out`
         if (to_copy < len) { // optional: pad tail
             memset((uint8_t*)parcel->hdrCoef + to_copy, 0, len - to_copy);
         }
-        return 0;
+        return HDR_ERR_NO;
     }
 
-    // Pointer case
-    if (out == 0) return -HDR_ERR_INVAL;
-    memcpy(parcel->hdrCoef, reinterpret_cast<void*>(static_cast<intptr_t>(out)), len);
-    return 0;
+    return HDR_ERR_NO;
 }
 
 int HdrInterfaceWrapper::getHdrCoefData(HdrHwId hw_id, hdrCoefParcel* parcel) {
-    ALOGI("calling %s 2 aregfs", __func__);
+    return getHdrCoefData(hw_id, /*layer_index=*/0, parcel);
+}
+#endif
+
+int HdrInterfaceWrapper::getHdrCoefData(HdrHwId hw_id, int layer_index,
+                                        hdrCoefParcel* parcel) {
+    if (!parcel || !parcel->hdrCoef) return HDR_ERR_PTR;
+    if (!mGetHdrCoefData)          return HDR_ERR_PTR;
+    if (hw_id < 0 || hw_id >= HDR_HW_MAX) return HDR_ERR_INVAL;
+
+    // Important: zero the destination so we can detect incomplete writes in logs
+    memset(parcel->hdrCoef, 0xDA, sizeof(hdrCoef)); // optional but useful for debugging
+
+    // The blob will write directly into parcel->hdrCoef.
+    // 'out' (fd) is merely a side channel — ignore it for now.
+    int fd_or_status = -1;
+    int ret = mGetHdrCoefData(mObj, layer_index, &fd_or_status);
+    if (ret != 0) return ret;
+
+    // Don't close() or mmap() 'fd_or_status' here; it's not yours to manage for this flow.
+    // Just return success; the data should already be in parcel->hdrCoef.
+    return HDR_ERR_NO;
+}
+
+int HdrInterfaceWrapper::getHdrCoefData(HdrHwId hw_id, hdrCoefParcel* parcel) {
+    // If you keep the 2-arg entry, delegate with a sane default layer (HWC passes the real one anyway)
     return getHdrCoefData(hw_id, /*layer_index=*/0, parcel);
 }
 
 void HdrInterfaceWrapper::setLogLevel(int log_level) {
-    ALOGI("calling %s", __func__);
     if (mSetLogLevel) {
         mSetLogLevel(mObj, log_level);
     }
 }
 
 void HdrInterfaceWrapper::setDebugMode(enum DebugMode debug_mode) {
-    ALOGI("calling %s", __func__);
     if (mSetDebugMode) {
         mSetDebugMode(mObj, debug_mode);
     }
+}
+
+#define PRINT_ARRAY(label, arr, len) do { \
+    int pos = 0; \
+    pos += snprintf(buf + pos, sizeof(buf) - pos, "%s: ", label); \
+    for (i = 0; i < (len) && pos < (int)sizeof(buf) - 16; i++) \
+        pos += snprintf(buf + pos, sizeof(buf) - pos, "%u ", (arr)[i]); \
+    buf[sizeof(buf) - 1] = '\0'; \
+    ALOGI("%s", buf); \
+} while (0)
+
+static void printhdrCoef(int layer_index,
+                         unsigned int ids,
+                         const struct hdrCoef *output)
+{
+    int i;
+    char buf[2048];
+
+    ALOGI("%s +", __func__);
+    ALOGI("layer_index: %d, ids: %d", layer_index, ids);
+
+    ALOGI("hdr_en: %u", output->hdr_en);
+    ALOGI("oetf_en: %u", output->oetf_en);
+
+    PRINT_ARRAY("oetf_x", output->oetf_x, 33);
+    PRINT_ARRAY("oetf_y", output->oetf_y, 33);
+
+    ALOGI("eotf_en: %u", output->eotf_en);
+    PRINT_ARRAY("eotf_x", output->eotf_x, 129);
+    PRINT_ARRAY("eotf_y", output->eotf_y, 129);
+
+    ALOGI("gm_en: %u", output->gm_en);
+    PRINT_ARRAY("gm_coef", output->gm_coef, 9);
+
+    ALOGI("tm_en: %u", output->tm_en);
+    PRINT_ARRAY("tm_coef", output->tm_coef, 3);
+    PRINT_ARRAY("tm_rngx", output->tm_rngx, 2);
+    PRINT_ARRAY("tm_rngy", output->tm_rngy, 2);
+    PRINT_ARRAY("tm_x", output->tm_x, 33);
+    PRINT_ARRAY("tm_y", output->tm_y, 33);
+
+    ALOGI("%s -", __func__);
 }
