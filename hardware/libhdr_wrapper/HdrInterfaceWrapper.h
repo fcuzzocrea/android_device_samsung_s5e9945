@@ -13,15 +13,14 @@ class HdrInterfaceWrapper : public hdrInterface {
     ~HdrInterfaceWrapper() override;
 
     // init phase
-    int sethdr10pMetaInterface(class hdr10pMetaInterface __attribute__((unused)) * hdr10pMetaIf) override { return 0;}
+    int sethdr10pMetaInterface(class hdr10pMetaInterface __attribute__((unused))* hdr10pMetaIf) override {return 0;}
     int getHdrCoefSize(enum HdrHwId hw_id) override;
 
     // per frame setting phase (set when there is any change)
     int setTargetInfo(struct HdrTargetInfo* tInfo) override;
     void setHDRlayer(bool hasHdr) override;
     void setRenderIntent(int rendIntent) override;
-    void setSensorInfo(float __attribute__((unused)) max,
-                       float __attribute__((unused)) val) override {}
+    void setSensorInfo(float __attribute__((unused)) max, float __attribute__((unused)) val) override {}
 
     // per frame & per layer in between phase
     int initHdrCoefBuildup(enum HdrHwId __attribute__((unused)) hw_id) override;
@@ -41,10 +40,10 @@ class HdrInterfaceWrapper : public hdrInterface {
   private:
     HdrInterfaceWrapper() = default;
 
-    // dlopen handle and opaque object buffer constructed via vendor ctor --
+    // dlopen handle and opaque object buffer constructed via vendor ctor
     void* mLib = nullptr;
     void* mObj = nullptr;
-  
+
     // Function pointer types
     using Ctor = void (*)(void* self);
     using Dtor = void (*)(void* self);
@@ -64,7 +63,7 @@ class HdrInterfaceWrapper : public hdrInterface {
     using F_initHdrBufFds = void (*)(void*);
     using F_deinitHdrBufFds = void (*)(void*);
     using F_initCurIf = void (*)(void*);
-    using F_isHdrAvailable = bool (*)(void*); /* puzza */
+    using F_isHdrAvailable = bool (*)(void*);
     using F_getAttributes = unsigned int (*)(void*);
     using F_initHdrCoefSize = void (*)(void*);
 
@@ -91,7 +90,7 @@ class HdrInterfaceWrapper : public hdrInterface {
     F_getAttributes mGetAttributes = nullptr;
     F_initHdrCoefSize mInitHdrCoefSize = nullptr;
 
-    // plumbing
+    // Plumbing
     bool openLib();
     bool resolveSyms();
     bool constructObj();
