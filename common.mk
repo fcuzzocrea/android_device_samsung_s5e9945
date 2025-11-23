@@ -168,7 +168,8 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     init.nfc.samsung.rc \
     libnfc-sec-vendor.conf \
-    libse-gto-hal.conf
+    libse-gto-hal.conf \
+    NfcOverlay
 
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += $(COMMON_PATH)/overlay

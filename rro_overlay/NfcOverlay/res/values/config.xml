@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: 2025 The Android Open Source Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- List of SKUs where Secure NFC functionality is supported -->
+    <string-array name="config_skuSupportsSecureNfc" translatable="false">
+        <item>b7rxxx</item>
+        <item>e1sksx</item>
+        <item>e1sxxx</item>
+        <item>e2sksx</item>
+        <item>e2sxxx</item>
+        <item>r12sjpnx</item>
+        <item>r12skdix</item>
+        <item>r12sksx</item>
+        <item>r12sxxx</item>
+        <item>12szhx</item>
+    </string-array>
+</resources>

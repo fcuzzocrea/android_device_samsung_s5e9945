@@ -4,11 +4,11 @@
      SPDX-License-Identifier: Apache-2.0
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.android.networkstack.tethering.overlay.s5e9945">
+    package="com.android.nfc.overlay.s5e9945">
 
     <overlay
         android:isStatic="true"
-        android:priority="0"
-        android:targetName="TetheringConfig"
-        android:targetPackage="com.android.networkstack.tethering" />
+        android:priority="700"
+        android:targetName="NfcCustomization"
+        android:targetPackage="com.android.nfc" />
 </manifest>
