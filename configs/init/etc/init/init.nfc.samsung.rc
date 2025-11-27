@@ -30,7 +30,3 @@ on boot
     chown nfc nfc /dev/st21nfc
     chmod 0660 /dev/st54spi
     chown secure_element secure_element /dev/st54spi
-
-# For NFC hardware SKU
-on boot && property:ro.boot.nfc.feature.chipname=*
-    setprop ro.vendor.nfc.feature.chipname ${ro.boot.nfc.feature.chipname}

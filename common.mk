@@ -166,6 +166,8 @@ PRODUCT_PACKAGES += \
 
 # NFC
 PRODUCT_PACKAGES += \
+    android.hardware.nfc-service.samsung \
+    com.android.nfc_extras \
     init.nfc.samsung.rc \
     libnfc-sec-vendor.conf \
     libse-gto-hal.conf \

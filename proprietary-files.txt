@@ -284,13 +284,8 @@ vendor/lib64/libveriben_lib.so
 vendor/lib64/vendor.samsung_slsi.hardware.enn_aidl-V1-ndk.so
 
 # NFC
-vendor/bin/hw/sec.android.hardware.nfc-service
-vendor/etc/init/sec-nfc-service.rc
 vendor/etc/nfc/sec_s3nsen6_hwreg.bin
 vendor/etc/nfc/sec_s3nsen6_swreg.bin
-vendor/etc/vintf/manifest/sec-nfc-service.xml
-vendor/lib64/nfc_nci_sec.so
-vendor/lib64/vendor.samsung.hardware.nfc_aidl-V1-ndk.so
 
 # RIL
 vendor/bin/dmd

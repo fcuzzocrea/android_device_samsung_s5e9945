@@ -97,10 +97,6 @@ debug.sf.predict_hwc_composition_strategy=0
 # Incremental FS
 ro.incremental.enable=true
 
-# NFC
-ro.product_ship=true
-ro.vendor.nfc.feature.chipname=SLSI
-
 # Power
 vendor.powerhal.disp.idle_support=false
 
