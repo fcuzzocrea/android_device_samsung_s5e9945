@@ -1,6 +1,5 @@
 #pragma once
 
-// #include <android-base/logging.h>
 #include <dlfcn.h>
 #include <hardware/exynos/hdrInterface.h>
 #include <vector>
@@ -37,8 +36,14 @@ class HdrInterfaceWrapper : public hdrInterface {
     void setLogLevel(int log_level) override;
     void setDebugMode(enum DebugMode debug_mode) override;
 
-  private:
+    // wrapper
     HdrInterfaceWrapper() = default;
+    bool openLib();
+    bool resolveSyms();
+    bool constructObj();
+    void destroyObj();
+
+  private:
 
     // dlopen handle and opaque object buffer constructed via vendor ctor
     void* mLib = nullptr;
@@ -89,12 +94,6 @@ class HdrInterfaceWrapper : public hdrInterface {
     F_isHdrAvailable mIsHdrAvailable = nullptr;
     F_getAttributes mGetAttributes = nullptr;
     F_initHdrCoefSize mInitHdrCoefSize = nullptr;
-
-    // Plumbing
-    bool openLib();
-    bool resolveSyms();
-    bool constructObj();
-    void destroyObj();
 
     static void* symReq(void* h, const char* name);
     static void* symOpt(void* h, const char* name);

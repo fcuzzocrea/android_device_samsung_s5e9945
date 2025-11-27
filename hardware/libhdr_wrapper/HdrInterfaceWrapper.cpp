@@ -259,3 +259,8 @@ void HdrInterfaceWrapper::setDebugMode(enum DebugMode debug_mode) {
         mSetDebugMode(mObj, debug_mode);
     }
 }
+
+hdrInterface* hdrInterface::createInstance(void)
+{
+    return HdrInterfaceWrapper::Create();
+}
