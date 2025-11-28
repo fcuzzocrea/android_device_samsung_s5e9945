@@ -11,7 +11,7 @@ cc_library_shared {
     ],
     header_libs: [
         "libsystem_headers",
-        "libhdrinterface_header_s5e9945",
+        "libhdrinterface_header_default",
         "libhdr10p_meta_interface_header",
     ],
     cflags: ["-Wno-unused-parameter", "-DLOG_TAG=\"libhdr_wrapper\"",],
