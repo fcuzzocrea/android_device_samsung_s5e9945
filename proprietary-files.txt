@@ -81,8 +81,8 @@ vendor/lib64/vendor.samsung.hardware.thermal@1.0.so
 
 # Codec2
 vendor/lib64/libImageFormatConverter.so
-vendor/lib64/librechdr10plus.so
 vendor/lib64/librechdr10plus.plugin.so
+vendor/lib64/librechdr10plus.so
 
 # DRM
 vendor/apex/com.google.android.widevine.nonupdatable.apex
@@ -245,9 +245,9 @@ vendor/lib64/libspictrl.so
 vendor/lib64/vendor.samsung.hardware.keymint-V3-ndk.so
 
 # Misc
+vendor/etc/hdr_samsung_mx.key
 vendor/lib64/libfloatingfeature.so
 vendor/lib64/libsecnativefeature.so
-vendor/etc/hdr_samsung_mx.key
 
 # Neural Networks
 vendor/bin/hw/android.hardware.neuralnetworks-service-enn
