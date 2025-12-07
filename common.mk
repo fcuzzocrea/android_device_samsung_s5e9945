@@ -174,8 +174,15 @@ PRODUCT_PACKAGES += \
     NfcOverlay
 
 # Overlays
-DEVICE_PACKAGE_OVERLAYS += $(COMMON_PATH)/overlay
-PRODUCT_ENFORCE_RRO_TARGETS := *
+PRODUCT_PACKAGES += \
+    ApertureOverlayCommon \
+    CarrierConfigOverlayCommon \
+    FrameworkResOverlayCommon \
+    LineageDialerOverlayCommon \
+    LineageSDKOverlayCommon \
+    LineageSettingsOverlayCommon \
+    SettingsOverlayCommon \
+    SystemUIOverlayCommon
 
 # Permissions
 PRODUCT_COPY_FILES += \
