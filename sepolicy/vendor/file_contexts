@@ -8,7 +8,6 @@
 /dev/p3                                                                 u:object_r:secure_element_device:s0
 /dev/qbt2000_fd                                                         u:object_r:fp_sensor_device:s0
 /dev/qbt2000_ipc                                                        u:object_r:fp_sensor_device:s0
-/dev/sec-nfc                                                            u:object_r:nfc_device:s0
 /dev/socket/hermesd_secnvm                                              u:object_r:hermes_socket:s0
 /dev/ssp                                                                u:object_r:ssp_device:s0
 /dev/ttyGS[0-9]*                                                        u:object_r:serial_device:s0
@@ -57,7 +56,6 @@
 /(vendor|system/vendor)/bin/hw/vendor\.samsung\.hardware\.camera\.provider-service_64   u:object_r:hal_camera_default_exec:s0
 /(vendor|system/vendor)/bin/hw/vendor\.samsung\.hardware\.gnss-service                  u:object_r:hal_gnss_default_exec:s0
 /(vendor|system/vendor)/bin/hw/vendor.samsung_slsi.hardware.enn_aidl-service            u:object_r:hal_enn_default_exec:s0
-/(vendor|system/vendor)/bin/hw/sec\.android\.hardware\.nfc-service                      u:object_r:hal_nfc_default_exec:s0
 
 # Wakeup
 /sys/devices/platform/(.*)/wakeup[0-9]*(/.*)?       u:object_r:sysfs_wakeup:s0

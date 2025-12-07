@@ -298,7 +298,8 @@ PRODUCT_SOONG_NAMESPACES += \
     hardware/google/pixel \
     hardware/qcom-caf/wlan \
     hardware/samsung \
-    hardware/samsung_slsi-linaro/exynos/cpboot_v3
+    hardware/samsung_slsi-linaro/exynos/cpboot_v3 \
+    $(COMMON_PATH)
 
 # Storage
 $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)

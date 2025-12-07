@@ -1,3 +1,3 @@
-unsigned int createOperator(int param_1 __attribute__((unused))) {
-    return 0;
+void * createScenarioOperator(int param_1, int param_2) {
+    return nullptr;
 }
