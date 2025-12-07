@@ -1,3 +1,14 @@
+//
+// Copyright (C) 2025 The LineageOS Project
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+soong_namespace {
+	imports: [
+          "hardware/samsung_slsi-linaro/exynos"
+	],
+}
+
 install_symlink {
     name: "etc_root_symlink",
     recovery: true,
