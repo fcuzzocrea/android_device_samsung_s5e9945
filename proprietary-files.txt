@@ -208,6 +208,11 @@ vendor/apex/com.samsung.android.gnss.lsi.root.signed/lib64/gnss_aidl_lib.so:vend
 vendor/apex/com.samsung.android.gnss.lsi.root.signed/lib64/libwrappergps.so:vendor/lib64/libwrappergps.so
 vendor/apex/com.samsung.android.gnss.lsi.root.signed/lib64/vendor.samsung.hardware.gnss-V3-ndk.so:vendor/lib64/vendor.samsung.hardware.gnss-V3-ndk.so
 
+# Gralloc
+vendor/bin/hw/android.hardware.graphics.allocator-aidl-service-sgr
+vendor/etc/init/android.hardware.graphics.allocator-aidl-service-sgr.rc
+vendor/lib64/hw/android.hardware.graphics.mapper@4.0-impl-sgr.so
+
 # Graphics
 vendor/lib64/hw/vulkan.samsung.so
 vendor/lib64/libSGPUOpenCL.so:vendor/lib64/libOpenCL.so;FIX_SONAME;TRYSRCFIRST
