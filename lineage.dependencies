@@ -4,6 +4,34 @@
         "target_path": "hardware/samsung"
     },
     {
+        "repository": "android_hardware_samsung_slsi_nfc",
+        "target_path": "hardware/samsung_slsi/nfc"
+    },
+    {
+        "repository": "android_hardware_samsung_slsi-linaro_codec2",
+        "target_path": "hardware/samsung_slsi-linaro/openmax"
+    },
+    {
+        "repository": "android_hardware_samsung_slsi-linaro_config",
+        "target_path": "hardware/samsung_slsi-linaro/config"
+    },
+    {
+        "repository": "android_hardware_samsung_slsi-linaro_exynos",
+        "target_path": "hardware/samsung_slsi-linaro/exynos"
+    },
+    {
+        "repository": "android_hardware_samsung_slsi-linaro_graphics",
+        "target_path": "hardware/samsung_slsi-linaro/graphics"
+    },
+    {
+        "repository": "android_hardware_samsung_slsi-linaro_interfaces",
+        "target_path": "hardware/samsung_slsi-linaro/interfaces"
+    },
+#    {
+#        "repository": "android_hardware_samsung_slsi-linaro_sgpu",
+#        "target_path": "hardware/samsung_slsi-linaro/interfaces"
+#    },
+    {
         "repository": "android_kernel_samsung_s5e9945",
         "target_path": "kernel/samsung/s5e9945"
     }
