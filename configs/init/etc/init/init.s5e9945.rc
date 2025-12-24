@@ -89,7 +89,7 @@ on init
     chmod 0664 /dev/cpuctl/top-app/cpu.uclamp.min
 
     # Clear sched_util_clamp_min_rt_default
-    # write /proc/sys/kernel/sched_util_clamp_min_rt_default 0
+    write /proc/sys/kernel/sched_util_clamp_min_rt_default 0
 
     # System Performance - midground
     mkdir /dev/cpuctl/midground
@@ -521,7 +521,7 @@ on post-fs-data
     # Permission for GPU
     chown mediacodec system /sys/kernel/gpu/gpu_mm_min_clock
     chmod 0644 /sys/kernel/gpu/gpu_mm_min_clock
-    chmod 0000 /sys/class/devfreq/16e00000.sgpu/trans_stat
+    chmod 0000 /sys/class/devfreq/22200000.sgpu/trans_stat
 
     # Permissions for GPU hqm info
     chown system system /sys/kernel/gpu/gpu_info
@@ -1358,16 +1358,16 @@ on boot
     write /dev/cpuset/moderate/cpus 0-3
 
 on early-fs
-    write /sys/block/sda/queue/scheduler ssg
-    write /sys/block/sdb/queue/scheduler ssg
-    write /sys/block/sdc/queue/scheduler ssg
-    write /sys/block/sdd/queue/scheduler ssg
-    write /sys/block/sde/queue/scheduler ssg
-    write /sys/block/sdf/queue/scheduler ssg
-    write /sys/block/sdg/queue/scheduler ssg
-    write /sys/block/sdh/queue/scheduler ssg
-    write /sys/class/block/mmcblk0/queue/scheduler ssg
-    write /sys/class/block/mmcblk1/queue/scheduler ssg
+    write /sys/block/sda/queue/scheduler bfq
+    write /sys/block/sdb/queue/scheduler bfq
+    write /sys/block/sdc/queue/scheduler bfq
+    write /sys/block/sdd/queue/scheduler bfq
+    write /sys/block/sde/queue/scheduler bfq
+    write /sys/block/sdf/queue/scheduler bfq
+    write /sys/block/sdg/queue/scheduler bfq
+    write /sys/block/sdh/queue/scheduler bfq
+    write /sys/class/block/mmcblk0/queue/scheduler bfq
+    write /sys/class/block/mmcblk1/queue/scheduler bfq
 
     # blkio cgroup
     mkdir /dev/blkio/top
@@ -1417,6 +1417,8 @@ on early-fs
     write /dev/blkio/low/blkio.ssg.max_available_ratio 30
 
 on late-fs
+    start bootanim
+    class_start animation
     wait_for_prop hwservicemanager.ready true
     mount_all /vendor/etc/fstab.${ro.hardware} --late
     swapon_all /vendor/etc/fstab.${ro.hardware}
@@ -1749,7 +1751,7 @@ on fs
     chmod 0660 /sys/class/dqe/dqe/de
     chown system system /sys/class/dqe/dqe/de
 
-#     DP AUX switch control for factory test
+    # DP AUX switch control for factory test
     chmod 0660 /sys/class/dp_sec/dp_sbu_sw_sel
     chown system system /sys/class/dp_sec/dp_sbu_sw_sel
     # DP DEX control
