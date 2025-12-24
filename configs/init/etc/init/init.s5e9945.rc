@@ -1761,7 +1761,6 @@ on fs
     chmod 0660 /sys/class/dp_sec/dp_error_info
     chown system system /sys/class/dp_sec/dp_error_info
 
-
     # Permission for flashlight control for HAL3.3
     # The Istor espresso board does not have the flash led h/w, So the below permission line are blocked.
     # If you want to test the flashlight in board which have the flash led h/w, Enable the below blocked lines.
@@ -1822,7 +1821,6 @@ on property:sys.boot_completed=1
     write /sys/kernel/mm/transparent_hugepage/khugepaged/max_ptes_none 0
     write /sys/kernel/mm/transparent_hugepage/khugepaged/max_ptes_swap 0
     write /sys/kernel/mm/transparent_hugepage/khugepaged/max_ptes_shared 0
-
 
     # enabled permission
     chown system system /dev/tspio
