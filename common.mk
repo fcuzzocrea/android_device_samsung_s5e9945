@@ -93,8 +93,6 @@ PRODUCT_PACKAGES += \
 # Graphics
 PRODUCT_PACKAGES += \
     android.hardware.composer.hwc3-service.slsi \
-    android.hardware.graphics.allocator-aidl-service-sgr \
-    android.hardware.graphics.mapper@4.0-impl-sgr \
     libdrm_sgpu \
     libexynosgraphicbuffer_public \
     libion_exynos
@@ -131,8 +129,8 @@ PRODUCT_PACKAGES += \
 
 # Init
 PRODUCT_PACKAGES += \
-    fstab.s5e9945_vendor \
-    fstab.s5e9945_vendor_ramdisk \
+    fstab.s5e9945 \
+    fstab.s5e9945.vendor_ramdisk \
     init.s5e9945.rc \
     ueventd.s5e9945.rc
 

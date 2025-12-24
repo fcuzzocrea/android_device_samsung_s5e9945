@@ -1,37 +1,8 @@
-genrule {
-    name: "gen_fstab_s5e9945_recovery",
-    srcs: ["etc/fstab.s5e9945.in"],
-    cmd: "grep -Ev 'efs|product|system_|vbmeta|vendor' $(in) |\n          sed  -E 's/,?\\w*mount,?|,fileencryption.*|recoveryonly,//g' |\n          sed 's/,inlinecrypt/            /' |\n          sed 's/recoveryonly/defaults/g' > $(out)",
-
-    out: ["recovery.fstab"],
-}
-
-genrule {
-    name: "gen_fstab_s5e9945_vendor",
-    srcs: ["etc/fstab.s5e9945.in"],
-    cmd: "grep -Ev 'first_stage_mount|recoveryonly' $(in) > $(out)",
-    out: ["fstab.s5e9945"],
-}
-
-genrule {
-    name: "gen_fstab_s5e9945_vendor_ramdisk",
-    srcs: ["etc/fstab.s5e9945.in"],
-    cmd: "grep -E '#|first_stage_mount' $(in) > $(out)",
-    out: ["fstab.s5e9945"],
-}
-
 prebuilt_etc {
-    name: "fstab.s5e9945_vendor",
-    src: ":gen_fstab_s5e9945_vendor",
-    filename: "fstab.s5e9945",
+    name: "fstab.s5e9945",
+    src: "etc/fstab.s5e9945",
     vendor: true,
-}
-
-prebuilt_etc {
-    name: "fstab.s5e9945_vendor_ramdisk",
-    src: ":gen_fstab_s5e9945_vendor_ramdisk",
-    filename: "fstab.s5e9945",
-    vendor_ramdisk: true,
+    vendor_ramdisk_available: true,
 }
 
 prebuilt_etc {
