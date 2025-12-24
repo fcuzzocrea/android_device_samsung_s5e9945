@@ -191,6 +191,7 @@
                 "0 => CPD Block",
                 "1 => C2 Block"
             ],
+            "DefaultIndex": 0,
             "ResetOnInit": true
         },
         {
@@ -240,6 +241,7 @@
                 "1.00",
                 "40.00"
             ],
+            "DefaultIndex": 0,
             "ResetOnInit": true
         },
         {
