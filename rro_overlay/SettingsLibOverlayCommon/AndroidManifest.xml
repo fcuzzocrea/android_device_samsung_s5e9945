@@ -4,8 +4,8 @@
      SPDX-License-Identifier: Apache-2.0
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.android.networkstack.tethering.overlay.s5e9945">
-    <overlay android:targetPackage="com.android.networkstack.tethering"
+          package="com.android.settingslib.overlay.common">
+    <overlay android:targetPackage="com.android.settingslib"
              android:isStatic="true"
-             android:priority="0" />
+             android:priority="100" />
 </manifest>

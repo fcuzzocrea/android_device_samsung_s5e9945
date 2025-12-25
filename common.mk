@@ -180,6 +180,7 @@ PRODUCT_PACKAGES += \
     LineageSDKOverlayCommon \
     LineageSettingsOverlayCommon \
     SettingsOverlayCommon \
+    SettingsLibOverlayCommon \
     SystemUIOverlayCommon
 
 # Permissions
