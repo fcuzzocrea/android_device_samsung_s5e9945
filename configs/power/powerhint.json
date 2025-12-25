@@ -28,6 +28,7 @@
             "Path": "/sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq",
             "Values": [
                 "2592000",
+                "115200",
                 "672000"
             ],
             "ResetOnInit": true
@@ -50,6 +51,7 @@
             "Values": [
                 "2900000",
                 "2688000",
+                "115200",
                 "672000"
             ],
             "ResetOnInit": true
@@ -72,6 +74,7 @@
             "Values": [
                 "3207000",
                 "2688000",
+                "115200",
                 "672000"
             ],
             "ResetOnInit": true
@@ -103,7 +106,7 @@
             "Name": "GPUMinFreq",
             "Path": "/sys/kernel/gpu/gpu_min_clock",
             "Values": [
-                "450000",
+                "545000",
                 "400000",
                 "252000"
             ],
@@ -153,20 +156,6 @@
                 "0 => EMS Level Normal",
                 "1 => EMS Level Boost",
                 "2 => EMS Level Performance"
-            ],
-            "DefaultIndex": 0,
-            "ResetOnInit": true
-        },
-        {
-            "Name": "EmsTaskBoost",
-            "Path": "/sys/kernel/ems/emstune/task_boost",
-            "Values": [
-                "0",
-                "22000"
-            ],
-            "Comments": [
-                "0 => No Boost",
-                "22000 => Boost"
             ],
             "DefaultIndex": 0,
             "ResetOnInit": true
@@ -296,6 +285,12 @@
             "Value": "800000"
         },
         {
+            "PowerHint": "SUSTAINED_PERFORMANCE",
+            "Node": "EmsTuneReqMode",
+            "Duration": 0,
+            "Value": "4"
+        },
+        {
             "PowerHint": "INTERACTION",
             "Node": "MemFreq",
             "Duration": 5000,
@@ -306,6 +301,12 @@
             "Node": "GPUMinFreq",
             "Duration": 3000,
             "Value": "400000"
+        },
+        {
+            "PowerHint": "INTERACTION",
+            "Node": "EmsTuneReqMode",
+            "Duration": 0,
+            "Value": "0"
         },
         {
             "PowerHint": "INTERACTION",
@@ -354,12 +355,6 @@
             "Node": "EmsTuneReqLevel",
             "Duration": 3000,
             "Value": "2"
-        },
-        {
-            "PowerHint": "LAUNCH",
-            "Node": "EmsTaskBoost",
-            "Duration": 3000,
-            "Value": "22000"
         },
         {
             "PowerHint": "LAUNCH",
@@ -429,12 +424,6 @@
         },
         {
             "PowerHint": "CAMERA_LAUNCH",
-            "Node": "EmsTaskBoost",
-            "Duration": 3000,
-            "Value": "22000"
-        },
-        {
-            "PowerHint": "CAMERA_LAUNCH",
             "Node": "Memboost",
             "Duration": 5000,
             "Value": "2"
@@ -453,6 +442,30 @@
         },
         {
             "PowerHint": "CAMERA_STREAMING_SECURE",
+            "Node": "CPULittleClusterMinFreq",
+            "Duration": 5000,
+            "Value": "768000"
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_SECURE",
+            "Node": "CPUMidClusterMinFreq",
+            "Duration": 5000,
+            "Value": "115200"
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_SECURE",
+            "Node": "CPUBigClusterMinFreq",
+            "Duration": 5000,
+            "Value": "115200"
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_SECURE",
+            "Node": "CPUBigPlusClusterMinFreq",
+            "Duration": 5000,
+            "Value": "115200"
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_SECURE",
             "Node": "EmsTuneReqMode",
             "Duration": 0,
             "Value": "5"
@@ -465,6 +478,30 @@
         },
         {
             "PowerHint": "CAMERA_STREAMING_HIGH",
+            "Node": "CPULittleClusterMinFreq",
+            "Duration": 5000,
+            "Value": "768000"
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_HIGH",
+            "Node": "CPUMidClusterMinFreq",
+            "Duration": 5000,
+            "Value": "115200"
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_HIGH",
+            "Node": "CPUBigClusterMinFreq",
+            "Duration": 5000,
+            "Value": "115200"
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_HIGH",
+            "Node": "CPUBigPlusClusterMinFreq",
+            "Duration": 5000,
+            "Value": "115200"
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_HIGH",
             "Node": "EmsTuneReqMode",
             "Duration": 0,
             "Value": "5"
@@ -477,6 +514,30 @@
         },
         {
             "PowerHint": "CAMERA_STREAMING_MID",
+            "Node": "CPULittleClusterMinFreq",
+            "Duration": 5000,
+            "Value": "768000"
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_MID",
+            "Node": "CPUMidClusterMinFreq",
+            "Duration": 5000,
+            "Value": "115200"
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_MID",
+            "Node": "CPUBigClusterMinFreq",
+            "Duration": 5000,
+            "Value": "115200"
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_MID",
+            "Node": "CPUBigPlusClusterMinFreq",
+            "Duration": 5000,
+            "Value": "115200"
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_MID",
             "Node": "EmsTuneReqMode",
             "Duration": 0,
             "Value": "5"
@@ -486,6 +547,30 @@
             "Node": "TAUClampBoost",
             "Duration": 0,
             "Value": "0.00"
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_LOW",
+            "Node": "CPULittleClusterMinFreq",
+            "Duration": 5000,
+            "Value": "768000"
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_LOW",
+            "Node": "CPUMidClusterMinFreq",
+            "Duration": 5000,
+            "Value": "115200"
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_LOW",
+            "Node": "CPUBigClusterMinFreq",
+            "Duration": 5000,
+            "Value": "115200"
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_LOW",
+            "Node": "CPUBigPlusClusterMinFreq",
+            "Duration": 5000,
+            "Value": "115200"
         },
         {
             "PowerHint": "CAMERA_STREAMING_LOW",
@@ -502,32 +587,14 @@
         {
             "PowerHint": "CAMERA_SHOT",
             "Node": "CPULittleClusterMinFreq",
-            "Duration": 500,
+            "Duration": 3000,
             "Value": "768000"
-        },
-        {
-            "PowerHint": "CAMERA_SHOT",
-            "Node": "CPUMidClusterMinFreq",
-            "Duration": 500,
-            "Value": "672000"
-        },
-        {
-            "PowerHint": "CAMERA_SHOT",
-            "Node": "CPUBigClusterMinFreq",
-            "Duration": 500,
-            "Value": "672000"
-        },
-        {
-            "PowerHint": "CAMERA_SHOT",
-            "Node": "CPUBigPlusClusterMinFreq",
-            "Duration": 500,
-            "Value": "672000"
         },
         {
             "PowerHint": "EXPENSIVE_RENDERING",
             "Node": "GPUMinFreq",
             "Duration": 0,
-            "Value": "450000"
+            "Value": "545000"
         },
         {
             "PowerHint": "GAME_LOADING",
@@ -650,10 +717,16 @@
             "Value": "1.00"
         },
         {
-            "PowerHint": "INTERACTIVE",
+            "PowerHint": "DISPLAY_INACTIVE",
             "Node": "EmsTuneReqMode",
             "Duration": 0,
-            "Value": "0"
+            "Value": "1"
+        },
+        {
+            "PowerHint": "DEVICE_IDLE",
+            "Node": "EmsTuneReqMode",
+            "Duration": 0,
+            "Value": "1"
         },
         {
             "PowerHint": "DOUBLE_TAP_TO_WAKE",
