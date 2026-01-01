@@ -1,32 +1,6 @@
 {
   "Profiles": [
     {
-      "Name": "GpisSfCpusetEnable",
-      "Actions": [
-        {
-          "Name": "SetAttribute",
-          "Params":
-          {
-            "Name": "GpisSfCpuset",
-            "Value": "4-8"
-          }
-        }
-      ]
-    },
-    {
-      "Name": "GpisSfCpusetDisable",
-      "Actions": [
-        {
-          "Name": "SetAttribute",
-          "Params":
-          {
-            "Name": "GpisSfCpuset",
-            "Value": "0-8"
-          }
-        }
-      ]
-    },
-    {
       "Name": "HighEnergySaving",
       "Actions": [
         {
@@ -177,6 +151,45 @@
       ]
     },
     {
+      "Name": "CameraServiceHighCapacity",
+      "Actions": [
+        {
+          "Name": "JoinCgroup",
+          "Params":
+          {
+            "Controller": "cpuset",
+            "Path": "camera-daemon-high-group"
+          }
+        }
+      ]
+    },
+    {
+      "Name": "CameraServiceMidCapacity",
+      "Actions": [
+        {
+          "Name": "JoinCgroup",
+          "Params":
+          {
+            "Controller": "cpuset",
+            "Path": "camera-daemon-mid-group"
+          }
+        }
+      ]
+    },
+    {
+      "Name": "CameraServiceMidHighCapacity",
+      "Actions": [
+        {
+          "Name": "JoinCgroup",
+          "Params":
+          {
+            "Controller": "cpuset",
+            "Path": "camera-daemon-mid-high-group"
+          }
+        }
+      ]
+    },
+    {
       "Name": "MidgroundProcess",
       "Actions": [
         {
@@ -198,6 +211,13 @@
           }
         }
       ]
+    }
+  ],
+
+  "AggregateProfiles": [
+    {
+      "Name": "Dex2OatBootComplete",
+      "Profiles": [ "Dex2oatPerformance", "ProcessCapacityNormal", "LowIoPriority", "TimerSlackHigh" ]
     }
   ]
 }
