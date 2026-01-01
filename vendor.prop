@@ -100,6 +100,8 @@ debug.sf.predict_hwc_composition_strategy=0
 ro.incremental.enable=true
 
 # Power
+debug.sf.enable_adpf_cpu_hint=true
+debug.hwui.use_hint_manager=true
 vendor.powerhal.disp.idle_support=false
 
 # Support ANGLE features

@@ -151,45 +151,6 @@
       ]
     },
     {
-      "Name": "CameraServiceHighCapacity",
-      "Actions": [
-        {
-          "Name": "JoinCgroup",
-          "Params":
-          {
-            "Controller": "cpuset",
-            "Path": "camera-daemon-high-group"
-          }
-        }
-      ]
-    },
-    {
-      "Name": "CameraServiceMidCapacity",
-      "Actions": [
-        {
-          "Name": "JoinCgroup",
-          "Params":
-          {
-            "Controller": "cpuset",
-            "Path": "camera-daemon-mid-group"
-          }
-        }
-      ]
-    },
-    {
-      "Name": "CameraServiceMidHighCapacity",
-      "Actions": [
-        {
-          "Name": "JoinCgroup",
-          "Params":
-          {
-            "Controller": "cpuset",
-            "Path": "camera-daemon-mid-high-group"
-          }
-        }
-      ]
-    },
-    {
       "Name": "MidgroundProcess",
       "Actions": [
         {
@@ -208,6 +169,32 @@
             "ProcFilePath": "/sys/kernel/ems/taskgroup/midground/proc",
             "Value": "<pid>",
             "LogFailures": "false"
+          }
+        }
+      ]
+    },
+    {
+      "Name": "SFMainPolicy",
+      "Actions": [
+        {
+          "Name": "JoinCgroup",
+          "Params":
+          {
+            "Controller": "cpuset",
+            "Path": "sf"
+          }
+        }
+      ]
+    },
+    {
+      "Name": "SFRenderEnginePolicy",
+      "Actions": [
+        {
+          "Name": "JoinCgroup",
+          "Params":
+          {
+            "Controller": "cpuset",
+            "Path": "sf"
           }
         }
       ]
