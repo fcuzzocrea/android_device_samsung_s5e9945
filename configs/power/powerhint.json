@@ -283,8 +283,8 @@
             "Name": "MLUClampBoost",
             "Path": "/sys/kernel/ems/taskgroup/nnapi-hal/uclamp_min",
             "Values": [
-                "0.00",
-                "40.00"
+                "12.00",
+                "42.00"
             ],
             "DefaultIndex": 0,
             "ResetOnInit": true
@@ -294,7 +294,7 @@
             "Path": "/sys/kernel/ems/taskgroup/foreground/uclamp_min",
             "Values": [
                 "0.00",
-                "5.00"
+                "8.00"
             ],
             "DefaultIndex": 0,
             "ResetOnInit": true
@@ -405,7 +405,7 @@
             "PowerHint": "LAUNCH",
             "Node": "FGUClampBoost",
             "Duration": 3000,
-            "Value": "5.00"
+            "Value": "8.00"
         },
         {
             "PowerHint": "CAMERA_LAUNCH",
@@ -867,7 +867,7 @@
             "PowerHint": "ML_ACC",
             "Node": "MLUClampBoost",
             "Duration": 2000,
-            "Value": "40.00"
+            "Value": "42.00"
         },
         {
             "PowerHint": "ML_ACC",
@@ -891,7 +891,7 @@
             "PowerHint": "DISPLAY_CHANGE",
             "Node": "FGUClampBoost",
             "Duration": 5000,
-            "Value": "5.00"
+            "Value": "8.00"
         },
         {
             "PowerHint": "DISPLAY_IDLE",
