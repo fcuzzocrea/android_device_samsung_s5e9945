@@ -342,7 +342,8 @@ PRODUCT_PACKAGES += \
 
 # Vibrator
 PRODUCT_PACKAGES += \
-    android.hardware.vibrator-service.samsung
+    android.hardware.vibrator-service.samsung \
+    haptic_feedback_constants.xml
 
 # Wi-Fi
 PRODUCT_PACKAGES += \
