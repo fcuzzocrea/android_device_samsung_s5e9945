@@ -1358,16 +1358,16 @@ on boot
     write /dev/cpuset/moderate/cpus 0-3
 
 on early-fs
-    write /sys/block/sda/queue/scheduler bfq
-    write /sys/block/sdb/queue/scheduler bfq
-    write /sys/block/sdc/queue/scheduler bfq
-    write /sys/block/sdd/queue/scheduler bfq
-    write /sys/block/sde/queue/scheduler bfq
-    write /sys/block/sdf/queue/scheduler bfq
-    write /sys/block/sdg/queue/scheduler bfq
-    write /sys/block/sdh/queue/scheduler bfq
-    write /sys/class/block/mmcblk0/queue/scheduler bfq
-    write /sys/class/block/mmcblk1/queue/scheduler bfq
+    write /sys/block/sda/queue/scheduler ssg
+    write /sys/block/sdb/queue/scheduler ssg
+    write /sys/block/sdc/queue/scheduler ssg
+    write /sys/block/sdd/queue/scheduler ssg
+    write /sys/block/sde/queue/scheduler ssg
+    write /sys/block/sdf/queue/scheduler ssg
+    write /sys/block/sdg/queue/scheduler ssg
+    write /sys/block/sdh/queue/scheduler ssg
+    write /sys/class/block/mmcblk0/queue/scheduler ssg
+    write /sys/class/block/mmcblk1/queue/scheduler ssg
 
     # blkio cgroup
     mkdir /dev/blkio/top
