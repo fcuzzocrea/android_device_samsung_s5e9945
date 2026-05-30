@@ -260,6 +260,11 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     vendor.lineage.powershare-service.samsung
 
+# Profiler
+PRODUCT_PACKAGES += \
+    init.gflow.rc \
+    init.gperf.rc
+
 # Recovery
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/configs/init/etc/init/init.recovery.s5e9945.rc:recovery/root/init.recovery.s5e9945.rc

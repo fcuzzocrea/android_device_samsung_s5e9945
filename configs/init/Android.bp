@@ -34,6 +34,20 @@ prebuilt_etc {
 }
 
 prebuilt_etc {
+    name: "init.gflow.rc",
+    src: "etc/init/init.gflow.rc",
+    vendor: true,
+    relative_install_path: "init",
+}
+
+prebuilt_etc {
+    name: "init.gperf.rc",
+    src: "etc/init/init.gperf.rc",
+    vendor: true,
+    relative_install_path: "init",
+}
+
+prebuilt_etc {
     name: "init.gps.rc",
     src: "etc/init/init.gps.rc",
     vendor: true,

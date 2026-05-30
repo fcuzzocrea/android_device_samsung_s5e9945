@@ -293,6 +293,12 @@ vendor/lib64/vendor.samsung_slsi.hardware.enn_aidl-V1-ndk.so
 vendor/etc/nfc/sec_s3nsen6_hwreg.bin
 vendor/etc/nfc/sec_s3nsen6_swreg.bin
 
+# Profiler
+vendor/bin/gflow
+vendor/bin/gperf
+vendor/lib64/libexynos_logger.so
+vendor/lib64/libexynos_profiler.so
+
 # RIL
 vendor/bin/dmd
 vendor/bin/hw/rild

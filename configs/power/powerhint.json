@@ -238,16 +238,6 @@
             "DefaultIndex": 0,
             "ResetOnInit": true
         },
-       {
-            "Name": "UserTargetFps",
-            "Path": "/sys/devices/platform/exynos-profiler/control/user_target_fps",
-            "Values": [
-                "495615",
-                "244575",
-                "0"
-            ],
-            "ResetOnInit": true
-        },
         {
             "Name": "GPUIfpoRuntimeControl",
             "Path": "/sys/kernel/gpu/gpu_ifpo_runtime_control",
@@ -808,12 +798,6 @@
             "Node": "EmsTuneReqMode",
             "Duration": 0,
             "Value": "3"
-        },
-        {
-            "PowerHint": "GAME",
-            "Node": "UserTargetFps",
-            "Duration": 0,
-            "Value": "244575"
         },
         {
             "PowerHint": "GAME",
