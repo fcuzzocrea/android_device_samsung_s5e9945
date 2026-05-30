@@ -128,7 +128,7 @@ BOARD_VENDOR_RAMDISK_FRAGMENT.dlkm.MKBOOTIMG_ARGS := --ramdisk_type DLKM
 
 # Recovery
 BOARD_RECOVERY_MKBOOTIMG_ARGS := --header_version 2 --cmdline ""
-TARGET_RECOVERY_FSTAB := $(COMMON_PATH)/configs/init/etc/fstab.s5e9945
+TARGET_RECOVERY_FSTAB := $(COMMON_PATH)/configs/init/etc/fstab.recovery
 TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
 
 # Releasetools
