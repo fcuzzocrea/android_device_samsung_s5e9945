@@ -93,6 +93,8 @@ PRODUCT_PACKAGES += \
 # Graphics
 PRODUCT_PACKAGES += \
     android.hardware.composer.hwc3-service.slsi \
+    android.hardware.graphics.allocator-aidl-service-sgr \
+    android.hardware.graphics.mapper@4.0-impl-sgr \
     libdrm_sgpu \
     libexynosgraphicbuffer_public \
     libion_exynos
@@ -126,6 +128,10 @@ PRODUCT_PACKAGES += \
 # Hermes
 PRODUCT_PACKAGES += \
     hermesd.rc
+
+# HTS
+# PRODUCT_PACKAGES += \
+#    hts.rc
 
 # Init
 PRODUCT_PACKAGES += \
@@ -262,8 +268,11 @@ PRODUCT_PACKAGES += \
 
 # Profiler
 PRODUCT_PACKAGES += \
-    init.gflow.rc \
-    init.gperf.rc
+   init.gflow.rc \
+   init.gperf.rc
+
+PRODUCT_PACKAGES += \
+    init.debug.rc
 
 # Recovery
 PRODUCT_COPY_FILES += \

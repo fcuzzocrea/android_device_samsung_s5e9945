@@ -43,11 +43,6 @@
         </interface>
     </hal>
     <hal format="aidl">
-        <name>android.hardware.neuralnetworks</name>
-        <version>4</version>
-        <fqname>IDevice/enn</fqname>
-    </hal>
-    <hal format="aidl">
 	<name>android.hardware.gnss</name>
 	<version>3</version>
 	<interface>

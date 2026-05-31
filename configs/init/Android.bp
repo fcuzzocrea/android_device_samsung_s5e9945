@@ -20,6 +20,13 @@ prebuilt_etc {
 }
 
 prebuilt_etc {
+    name: "hts.rc",
+    src: "etc/init/hts.rc",
+    vendor: true,
+    relative_install_path: "init",
+}
+
+prebuilt_etc {
     name: "init.baseband.rc",
     src: "etc/init/init.baseband.rc",
     vendor: true,
@@ -141,6 +148,13 @@ prebuilt_etc {
 prebuilt_etc {
     name: "wifi_sec.rc",
     src: "etc/init/wifi_sec.rc",
+    vendor: true,
+    relative_install_path: "init",
+}
+
+prebuilt_etc {
+    name: "init.debug.rc",
+    src: "etc/init/init.debug.rc",
     vendor: true,
     relative_install_path: "init",
 }

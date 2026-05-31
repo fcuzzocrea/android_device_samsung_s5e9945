@@ -139,7 +139,7 @@ ENABLE_VENDOR_RIL_SERVICE := true
 $(call soong_config_set,cbd,protocol,sipc)
 
 # Security
-VENDOR_SECURITY_PATCH := 2025-08-01
+VENDOR_SECURITY_PATCH := 2026-02-05
 
 # SELinux
 include device/lineage/sepolicy/exynos/sepolicy.mk

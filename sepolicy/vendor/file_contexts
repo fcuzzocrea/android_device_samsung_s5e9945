@@ -1,6 +1,3 @@
-# /data
-/data/vendor/gatekeeper(/.*)?                                           u:object_r:vendor_gatekeeper_data_file:s0
-
 # DEV
 /dev/btpower                                                            u:object_r:bt_device:s0
 /dev/gnss_ipc                                                           u:object_r:gnss_device:s0
