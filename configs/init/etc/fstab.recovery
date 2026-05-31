@@ -26,7 +26,7 @@ vendor_dlkm                      /vendor_dlkm      erofs  ro                    
 /dev/block/by-name/metadata      /metadata         f2fs   noatime,nosuid,nodev,discard,sync,fsync_mode=strict,data_flush                                                  wait,formattable,first_stage_mount,check
 /dev/block/by-name/misc          /misc             emmc   defaults                                                                                                        defaults,first_stage_mount
 /dev/block/by-name/recovery      /recovery         emmc   defaults                                                                                                        first_stage_mount
-/dev/block/by-name/userdata      /data             f2fs   noatime,nosuid,nodev,discard,usrquota,grpquota,fsync_mode=nobarrier,reserve_root=32768,resgid=5678,inlinecrypt  latemount,wait,check,quota,checkpoint=fs,reservedsize=128M,fscompress
+/dev/block/by-name/userdata      /data             f2fs   noatime,nosuid,nodev,discard,usrquota,grpquota,fsync_mode=nobarrier,reserve_root=32768,resgid=5678,inlinecrypt  latemount,wait,check,formattable,quota,checkpoint=fs,reservedsize=128M,fscompress
 /dev/block/by-name/vbmeta        /vbmeta           emmc   defaults                                                                                                        first_stage_mount,formattable
 /dev/block/by-name/vbmeta_system /vbmeta_system    emmc   defaults                                                                                                        first_stage_mount,formattable
 /dev/block/by-name/vendor_boot   /vendor_boot      emmc   defaults                                                                                                        first_stage_mount,formattable
